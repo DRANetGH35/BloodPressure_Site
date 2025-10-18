@@ -1,34 +1,19 @@
 {% from "bootstrap5/form.html" import render_form %}
 {% extends "base.html" %} {% block content %}
 
-<body>
-<div class="container" style="justify-content:center; padding: 20px;">
-    <form class="container" style="justify-content:center;">
-        <table style="width:50%; margin:0 auto; justify-content:center;">
-            <tr>
-                <td><label class="form-label">Systolic</label></td>
-                <td><input type="number"></td>
-            </tr>
-            <tr>
-                <td><label class="form-label">Diastolic</label></td>
-                <td><input class="form-text" type="number"></td>
-            </tr>
-            <tr>
-                <td><label class="form-label">Heart Rate</label></td>
-                <td><input class="form-text"  type="number"></td>
-            </tr>
-            <tr>
-            <td>
-                </td>
-                <td>
-                    <input class="btn btn-primary" type="submit" value="Submit">
-                </td>
-            </tr>
-        </table>
 
-</form>
+
+
+<div class="container" style="padding: 50px; max-width: 300px;">
+     <form class="form-control" action="/submit" method="POST">
+     {{ form.csrf_token }}
+     {{ form.systolic.label }} {{ form.systolic(class="form-control") }}
+     {{ form.diastolic.label }} {{ form.diastolic(class="form-control") }}
+     {{ form.pulse.label }} {{ form.pulse(class="form-control") }}
+     {{ form.submit(class="form-control btn btn-primary", style="margin-top: 20px;") }}
+     </form>
 </div>
-</body>
+
 
 {% include 'footer.html' %}
 

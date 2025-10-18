@@ -11,7 +11,7 @@ def create_app():
     with open('csrfkey.txt', 'r') as file:
         app.config['SECRET_KEY'] = file.readline().strip('\n')
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)  # Time the user out after 30 minutes
 
     db.init_app(app)
@@ -27,8 +27,8 @@ def create_app():
             return None
 
 
-    #with app.app_context():
-    #    db.create_all()
+    with app.app_context():
+        db.create_all()
 
 
 

@@ -9,3 +9,10 @@ class User(UserMixin, db.Model):
     password: Mapped[str] = mapped_column(String(100))
     name: Mapped[str] = mapped_column(String(1000))
     is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False)
+
+class BloodPressure(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
+    systolic: Mapped[int] = mapped_column(Integer, nullable=False)
+    diastolic: Mapped[int] = mapped_column(Integer, nullable=False)
+    pulse: Mapped[int] = mapped_column(Integer, nullable=False)
+    time: Mapped[str] = mapped_column(String, nullable=False)
