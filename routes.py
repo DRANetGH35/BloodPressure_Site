@@ -14,6 +14,13 @@ def index():
     form = BloodPressureForm()
     return render_template('index.html', form=form)
 
+@app.route('/table')
+def table():
+    table_data = db.session.query(BloodPressure).all()
+    for entry in table_data:
+        print(entry.systolic, entry.diastolic)
+    return render_template('table.html', table=table_data)
+
 @app.route('/submit', methods=['POST'])
 def submit():
     form = BloodPressureForm()
@@ -32,3 +39,4 @@ def submit():
         db.session.commit()
         return render_template('success.html')
     return render_template('index.html', form=form, errors=form.errors)
+

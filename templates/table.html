@@ -1,0 +1,26 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends "base.html" %} {% block content %}
+
+{% include 'navbar.html' %}
+<div class="container">
+<table class="table">
+    <tr>
+        <td>Time</td>
+        <td>Systolic</td>
+        <td>Diastolic</td>
+        <td>Pulse</td>
+    </tr>
+{% for entry in table %}
+    <tr>
+        <td>{{ entry.time }}</td>
+        <td>{{ entry.systolic }}</td>
+        <td>{{ entry.diastolic }}</td>
+        <td>{{ entry.pulse }}</td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}
