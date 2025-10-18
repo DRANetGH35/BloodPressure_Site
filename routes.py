@@ -28,13 +28,15 @@ def submit():
         systolic = request.form.get('systolic')
         diastolic = request.form.get('diastolic')
         pulse = request.form.get('pulse')
+        notes = request.form.get('notes')
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(systolic, diastolic, pulse, now)
         print(type(now))
         new_entry = BloodPressure(systolic=systolic,
                                   diastolic=diastolic,
                                   pulse=pulse,
-                                  time=now)
+                                  time=now,
+                                  notes=notes)
         db.session.add(new_entry)
         db.session.commit()
         return render_template('success.html')

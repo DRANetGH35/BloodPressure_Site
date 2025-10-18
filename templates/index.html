@@ -4,12 +4,13 @@
 
 {% include 'navbar.html' %}
 
-<div class="container" style="padding: 50px; max-width: 300px;">
-     <form class="form-control" action="/submit" method="POST">
+<div class="container" style="padding: 50px; max-width: 400px;">
+     <form class="form-group" action="/submit" method="POST">
      {{ form.csrf_token }}
      {{ form.systolic.label }} {{ form.systolic(class="form-control") }}
      {{ form.diastolic.label }} {{ form.diastolic(class="form-control") }}
      {{ form.pulse.label }} {{ form.pulse(class="form-control") }}
+     {{ form.notes.label }} {{ form.notes(class="form-control") }}
      {{ form.submit(class="form-control btn btn-primary", style="margin-top: 20px;") }}
      </form>
 </div>

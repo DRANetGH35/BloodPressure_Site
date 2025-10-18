@@ -9,6 +9,7 @@
         <td>Systolic</td>
         <td>Diastolic</td>
         <td>Pulse</td>
+        <td>Notes</td>
     </tr>
 {% for entry in table %}
     <tr>
@@ -16,6 +17,7 @@
         <td>{{ entry.systolic }}</td>
         <td>{{ entry.diastolic }}</td>
         <td>{{ entry.pulse }}</td>
+        <td>{{ entry.notes }}</td>
     </tr>
 {% endfor %}
 </table>

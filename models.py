@@ -15,4 +15,5 @@ class BloodPressure(db.Model):
     systolic: Mapped[int] = mapped_column(Integer, nullable=False)
     diastolic: Mapped[int] = mapped_column(Integer, nullable=False)
     pulse: Mapped[int] = mapped_column(Integer, nullable=False)
+    notes: Mapped[String] = mapped_column(String, nullable=True)
     time: Mapped[str] = mapped_column(String, nullable=False)
