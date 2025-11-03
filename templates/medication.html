@@ -3,8 +3,11 @@
 
 
 {% include 'navbar.html' %}
-<div class="container">
-    <form class="form-control container" style="margin:auto; max-width: 200px; padding:20px;" action="/medication" method="post">
+<div class="container" style="text-align: center; padding: 20px;">
+    <a class="btn btn-secondary" href="/medication_table" style="font-size:30px">View Table</a>
+    <div class="container" style="max-width: 200px; margin: 20px auto 20px; padding: 20px; border-radius: 10px; border: 1px solid grey;">
+
+    <form class="container" style="padding:20px; margin-top: 20px;" action="/medication" method="post">
         {% for medication in medications %}
         <table>
         <tr>
@@ -13,11 +16,16 @@
         {% endfor %}
         </tr>
         <tr>
-        <td></td><td><input type="submit" class="btn btn-primary" value="Submit"></td>
+        <td></td><td></td>
         </tr>
         </table>
+        <br>
     </form>
-    <a class="btn btn-secondary" href="/add_new_medication">Add Medication</a>
+    <a class="btn btn-secondary" href="/add_new_medication">Add Med</a>
+    <br>
+
+</div>
+    <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 24px;">
 </div>
 {% include 'footer.html' %}
 
