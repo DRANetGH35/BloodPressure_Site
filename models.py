@@ -17,3 +17,8 @@ class BloodPressure(db.Model):
     pulse: Mapped[int] = mapped_column(Integer, nullable=False)
     notes: Mapped[String] = mapped_column(String, nullable=True)
     time: Mapped[str] = mapped_column(String, nullable=False)
+
+class Medication(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    time: Mapped[str] = mapped_column(String, nullable=False)
+    medication: Mapped[String] = mapped_column(String, nullable=False)

@@ -20,4 +20,8 @@ class BloodPressureForm(FlaskForm):
             raise ValidationError('Please enter a number between 0 and 1000')
 
 class AddNewMedicationForm(FlaskForm):
-    pass
+    medication = StringField('Medication', validators=[DataRequired()])
+    submit = SubmitField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

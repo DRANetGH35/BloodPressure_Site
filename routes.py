@@ -1,9 +1,9 @@
 from datetime import datetime
 import csv
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 
 from extensions import db
-from forms import BloodPressureForm
+from forms import BloodPressureForm, AddNewMedicationForm
 from models import User, BloodPressure, Medication
 from app import create_app
 
@@ -36,6 +36,23 @@ def medication():
         db.session.add(new_entry)
         db.session.commit()
     return render_template('medication.html', medications=medications)
+
+@app.route("/medication_table")
+def medication_table():
+    table_data = db.session.query(Medication).all()
+    for entry in table_data:
+        print(entry.medication)
+    return render_template('medication_table.html', table_data=table_data)
+
+@app.route("/add_new_medication", methods=['GET', 'POST'])
+def add_new_medication():
+    form = AddNewMedicationForm()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            with open('instance/medication.csv', 'a') as fd:
+                fd.write(f"{request.form.get('medication')}\n")
+            return redirect(url_for('medication'))
+    return render_template('/add_new_medication.html', form=form, errors=form.errors)
 
 @app.route('/submit', methods=['POST'])
 def submit():
