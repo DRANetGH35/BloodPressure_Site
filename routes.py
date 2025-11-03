@@ -1,6 +1,7 @@
 from datetime import datetime
 import csv
 from flask import render_template, request, redirect, url_for
+import os
 
 from extensions import db
 from forms import BloodPressureForm, AddNewMedicationForm
@@ -25,6 +26,9 @@ def table():
 @app.route('/medication', methods=['GET', 'POST'])
 def medication():
     medications = []
+    if not os.path.isfile('instance/medication.csv'):
+        with open("instance/medication.csv", "w") as f:
+            f.write('')
     with open('instance/medication.csv', newline='') as csvfile:
         csvreader = csv.reader(csvfile, delimiter=',')
         for row in csvreader:
@@ -40,8 +44,6 @@ def medication():
 @app.route("/medication_table")
 def medication_table():
     table_data = db.session.query(Medication).all()
-    for entry in table_data:
-        print(entry.medication)
     return render_template('medication_table.html', table_data=table_data)
 
 @app.route("/add_new_medication", methods=['GET', 'POST'])
@@ -49,6 +51,7 @@ def add_new_medication():
     form = AddNewMedicationForm()
     if request.method == "POST":
         if form.validate_on_submit():
+            print('test')
             with open('instance/medication.csv', 'a') as fd:
                 fd.write(f"{request.form.get('medication')}\n")
             return redirect(url_for('medication'))
@@ -63,8 +66,6 @@ def submit():
         pulse = request.form.get('pulse')
         notes = request.form.get('notes')
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(systolic, diastolic, pulse, now)
-        print(type(now))
         new_entry = BloodPressure(systolic=systolic,
                                   diastolic=diastolic,
                                   pulse=pulse,
