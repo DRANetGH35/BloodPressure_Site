@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% from "bootstrap5/form.html" import render_form %}
+{% extends "base.html" %} {% block content %}
+
+{% include 'navbar.html' %}
+<div class="container">
+<form action="/notes" method="POST">
+    {{ form.csrf_token }}
+<table class="table">
+    <tr>
+        <td>Time</td>
+        <td>Type</td>
+        <td>Note</td>
+        <td>--post--</td>
+    </tr>
+
+{% for entry in table %}
+    <tr>
+        <td>{{ entry.time }}</td>
+        <td>{{ entry.type }}</td>
+        <td>{{ entry.note }}</td>
+        <td><a>delete</a></td>
+    </tr>
+{% endfor %}
+    <tr>
+        <td style="max-width: 50px;"> Current time </td>
+        <td style="max-width: 50px;">{{ form.type(class="form-control") }}</td>
+        <td>{{ form.note(class="form-control") }}</td>
+        <td>{{ form.submit(class="form-control") }}</td>
+    </tr>
+</table>
+</form>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}

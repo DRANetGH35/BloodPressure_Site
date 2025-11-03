@@ -18,3 +18,11 @@ class BloodPressureForm(FlaskForm):
     def ensure_integer(self, field):
         if field.data < 1 or field.data > 1000:
             raise ValidationError('Please enter a number between 0 and 1000')
+
+class NoteForm(FlaskForm):
+    type = StringField('Type', validators=[DataRequired()])
+    note = StringField('Note', validators=[DataRequired()])
+    submit = SubmitField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

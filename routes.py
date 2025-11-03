@@ -3,8 +3,8 @@ from datetime import datetime
 from flask import render_template, request
 
 from extensions import db
-from forms import BloodPressureForm
-from models import User, BloodPressure
+from forms import BloodPressureForm, NoteForm
+from models import User, BloodPressure, Notes
 from app import create_app
 
 app = create_app()
@@ -13,6 +13,28 @@ app = create_app()
 def index():
     form = BloodPressureForm()
     return render_template('index.html', form=form)
+
+@app.route('/notes', methods=['GET', 'POST'])
+def notes_route():
+    form = NoteForm()
+    table_data = db.session.query(Notes).all()
+    if request.method == "GET":
+        return render_template('notes.html', table=table_data, form=form)
+    else:   #POST
+        if form.validate_on_submit():
+            type = request.form.get('type')
+            note = request.form.get('note')
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            new_entry = Notes(time=now,
+                              type=type,
+                              note=note)
+            print(new_entry)
+            db.session.add(new_entry)
+            db.session.commit()
+        else:
+            print(form.errors)
+            print("Failed to validate")
+        return render_template('notes.html', table=table_data, form=form)
 
 @app.route('/table')
 def table():
