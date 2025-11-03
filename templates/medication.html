@@ -1,0 +1,20 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends "base.html" %} {% block content %}
+
+
+{% include 'navbar.html' %}
+<div class="container">
+    <form class="form-control container" style="margin:auto; max-width: 200px; padding:20px;" action="/medication" method="post">
+        {% for medication in medications %}
+        <table>
+        <tr>
+        <td><input style="margin:5px" class="form-check-input" type="checkbox" id="{{ medication }}" name="{{ medication }}" value="{{ medication }}"></td>
+        <td><label style="margin:5px" for="{{ medication }}">{{ medication }}</label></td>
+        {% endfor %}
+        </tr>
+        </table>
+    </form>
+</div>
+{% include 'footer.html' %}
+
+{% endblock %}

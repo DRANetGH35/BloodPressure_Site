@@ -1,11 +1,12 @@
 from datetime import datetime
-
+import csv
 from flask import render_template, request
 
 from extensions import db
 from forms import BloodPressureForm
 from models import User, BloodPressure
 from app import create_app
+
 
 app = create_app()
 
@@ -20,6 +21,15 @@ def table():
     for entry in table_data:
         print(entry.systolic, entry.diastolic)
     return render_template('table.html', table=table_data)
+
+@app.route('/medication')
+def medication():
+    medications = []
+    with open('instance/medication.csv', newline='') as csvfile:
+        csvreader = csv.reader(csvfile, delimiter=',')
+        for row in csvreader:
+            medications.append(row[0])
+    return render_template('medication.html', medications=medications)
 
 @app.route('/submit', methods=['POST'])
 def submit():
