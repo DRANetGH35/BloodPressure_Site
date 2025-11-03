@@ -4,7 +4,7 @@ from flask import render_template, request
 
 from extensions import db
 from forms import BloodPressureForm
-from models import User, BloodPressure
+from models import User, BloodPressure, Medication
 from app import create_app
 
 
@@ -22,13 +22,19 @@ def table():
         print(entry.systolic, entry.diastolic)
     return render_template('table.html', table=table_data)
 
-@app.route('/medication')
+@app.route('/medication', methods=['GET', 'POST'])
 def medication():
     medications = []
     with open('instance/medication.csv', newline='') as csvfile:
         csvreader = csv.reader(csvfile, delimiter=',')
         for row in csvreader:
             medications.append(row[0])
+    if request.method == "POST":
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        med_list = [med for med in medications if request.form.get(med)]  #appends med to medlists as long as it has been selected in the form
+        new_entry = Medication(time=now, medication=str(med_list))
+        db.session.add(new_entry)
+        db.session.commit()
     return render_template('medication.html', medications=medications)
 
 @app.route('/submit', methods=['POST'])
