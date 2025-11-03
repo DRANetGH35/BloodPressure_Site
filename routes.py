@@ -51,7 +51,6 @@ def add_new_medication():
     form = AddNewMedicationForm()
     if request.method == "POST":
         if form.validate_on_submit():
-            print('test')
             with open('instance/medication.csv', 'a') as fd:
                 fd.write(f"{request.form.get('medication')}\n")
             return redirect(url_for('medication'))
