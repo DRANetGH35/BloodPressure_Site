@@ -22,11 +22,13 @@ def user_exists(username):
     return False
 
 @app.route('/')
+@login_required
 def index():
     form = BloodPressureForm()
     return render_template('index.html', form=form)
 
 @app.route('/table')
+@login_required
 def table():
     table_data = db.session.query(BloodPressure).all()
     for entry in table_data:
@@ -34,6 +36,7 @@ def table():
     return render_template('table.html', table=table_data)
 
 @app.route('/medication', methods=['GET', 'POST'])
+@login_required
 def medication():
     medications = []
     if not os.path.isfile('instance/medication.csv'):
@@ -52,11 +55,13 @@ def medication():
     return render_template('medication.html', medications=medications)
 
 @app.route("/medication_table")
+@login_required
 def medication_table():
     table_data = db.session.query(Medication).all()
     return render_template('medication_table.html', table_data=table_data)
 
 @app.route("/add_new_medication", methods=['GET', 'POST'])
+@login_required
 def add_new_medication():
     form = AddNewMedicationForm()
     if request.method == "POST":
@@ -67,6 +72,7 @@ def add_new_medication():
     return render_template('/add_new_medication.html', form=form, errors=form.errors)
 
 @app.route('/submit', methods=['POST'])
+@login_required
 def submit():
     form = BloodPressureForm()
     if form.validate_on_submit():
@@ -114,3 +120,12 @@ def register():
         db.session.add(new_user)
         db.session.commit()
     return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+@app.errorhandler(401)
+def page_not_found(e):
+    return render_template('errors/401.html')
