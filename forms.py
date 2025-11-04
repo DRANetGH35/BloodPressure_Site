@@ -5,6 +5,9 @@ from wtforms.validators import DataRequired, ValidationError
 from flask_wtf import FlaskForm
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from models import User
+
+
 class BloodPressureForm(FlaskForm):
     systolic = IntegerField('Systolic', validators=[DataRequired()])
     diastolic = IntegerField('Diastolic', validators=[DataRequired()])
@@ -25,3 +28,13 @@ class AddNewMedicationForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    change_password = BooleanField('Change Password')
+    submit = SubmitField('Login', render_kw={'class': 'btn custom-btn'})
+
+    def __init__(self, stored_password=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.stored_password = stored_password

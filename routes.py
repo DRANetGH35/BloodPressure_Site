@@ -1,15 +1,25 @@
 from datetime import datetime
 import csv
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import current_user, login_user, logout_user, login_required
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from extensions import db
-from forms import BloodPressureForm, AddNewMedicationForm
+from forms import BloodPressureForm, AddNewMedicationForm, LoginForm
 from models import User, BloodPressure, Medication
 from app import create_app
 
 
 app = create_app()
+
+def user_exists(username):
+    try:
+        if db.session.execute(db.select(User).where(User.name == username)).scalar():
+            return True
+    except AttributeError:
+        return False
+    return False
 
 @app.route('/')
 def index():
@@ -75,3 +85,25 @@ def submit():
         return render_template('success.html')
     return render_template('index.html', form=form, errors=form.errors)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if request.method == 'POST':
+        if not form.validate():
+            return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
+        user = db.session.execute(db.select(User).where(User.name == form.username.data)).scalar()
+        # if user does not exist or password is incorrect
+        if not user_exists(form.username.data) or not not check_password_hash(user.password, form.password.data):
+            flash('Incorrect username or password')
+            return redirect(url_for('login'))
+        login_user(user)
+        return redirect(url_for('home'))
+    else:
+        return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
