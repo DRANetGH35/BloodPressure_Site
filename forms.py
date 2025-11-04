@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from wtforms.fields import PasswordField, SubmitField, StringField, IntegerField, TextAreaField, BooleanField
 from wtforms.fields.choices import SelectField
 from wtforms.fields.simple import BooleanField
@@ -5,6 +6,7 @@ from wtforms.validators import DataRequired, ValidationError
 from flask_wtf import FlaskForm
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from extensions import db
 from models import User
 
 
@@ -38,3 +40,21 @@ class LoginForm(FlaskForm):
     def __init__(self, stored_password=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.stored_password = stored_password
+
+class RegisterForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired()])
+    is_admin = BooleanField('Admin')
+    submit = SubmitField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def validate_username(self, field):
+        if db.session.execute(select(User).where(User.name == field.data)).scalar_one_or_none():
+            raise ValidationError('Username already exists')
+
+    def validate_confirm_password(self, field):
+        if not self.password.data == self.confirm_password.data:
+            raise ValidationError('Passwords do not match')

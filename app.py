@@ -1,6 +1,8 @@
 from flask import Flask
 from datetime import timedelta
+
 from sqlalchemy import select
+
 from extensions import db, login_manager, bootstrap
 from models import User
 

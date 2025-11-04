@@ -6,7 +6,7 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from extensions import db
-from forms import BloodPressureForm, AddNewMedicationForm, LoginForm
+from forms import BloodPressureForm, AddNewMedicationForm, LoginForm, RegisterForm
 from models import User, BloodPressure, Medication
 from app import create_app
 
@@ -93,17 +93,24 @@ def login():
             return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
         user = db.session.execute(db.select(User).where(User.name == form.username.data)).scalar()
         # if user does not exist or password is incorrect
-        if not user_exists(form.username.data) or not not check_password_hash(user.password, form.password.data):
+        if not user_exists(form.username.data) or not check_password_hash(user.password, form.password.data):
             flash('Incorrect username or password')
             return redirect(url_for('login'))
         login_user(user)
-        return redirect(url_for('home'))
+        return redirect(url_for('index'))
     else:
         return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == "POST":
-        username = request.form.get('username')
-        password = request.form.get('password')
+    form = RegisterForm()
+    if request.method == 'POST':
+        if not form.validate():
+            return render_template('register.html', form=form, current_user=current_user, errors=form.errors)
+        new_user = User(name=form.username.data,
+                        password=generate_password_hash(password=form.password.data, method='pbkdf2:sha256', salt_length=8),
+                        is_admin=form.is_admin.data)
+        db.session.add(new_user)
+        db.session.commit()
+    return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
