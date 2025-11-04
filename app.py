@@ -1,6 +1,8 @@
 from flask import Flask
 from datetime import timedelta
+from flask_login import current_user, LoginManager
 from sqlalchemy import select
+
 from extensions import db, login_manager, bootstrap
 from models import User
 
@@ -17,6 +19,11 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     bootstrap.init_app(app)
+
+    @app.context_processor
+    def inject_user():
+        return dict(current_user=current_user)
+
 
     @login_manager.user_loader
     def load_user(user_id):

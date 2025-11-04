@@ -1,0 +1,15 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends "base.html" %} {% block content %}
+
+
+{% include 'navbar.html' %}
+
+<div class="container center text-center">
+    <h1>401 Unauthorized</h1>
+    <h2>You must login</h2>
+    <a class="btn btn-primary" href="/login">Login Here</a>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}
