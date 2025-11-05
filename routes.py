@@ -7,10 +7,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from extensions import db
 from forms import BloodPressureForm, AddNewMedicationForm, LoginForm, RegisterForm
+from medication import MedsJSON
 from models import User, BloodPressure, Medication
 from app import create_app
 
-
+meds_json = MedsJSON(f"instance/medication.json")
 app = create_app()
 
 def user_exists(username):
@@ -38,21 +39,13 @@ def table():
 @app.route('/medication', methods=['GET', 'POST'])
 @login_required
 def medication():
-    medications = []
-    if not os.path.isfile('instance/medication.csv'):
-        with open("instance/medication.csv", "w") as f:
-            f.write('')
-    with open('instance/medication.csv', newline='') as csvfile:
-        csvreader = csv.reader(csvfile, delimiter=',')
-        for row in csvreader:
-            medications.append(row[0])
     if request.method == "POST":
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        med_list = [med for med in medications if request.form.get(med)]  #appends med to medlists as long as it has been selected in the form
-        new_entry = Medication(time=now, medication=str(med_list))
+        new_entry = Medication(time=now, medication=str(request.form.getlist('medication')))
         db.session.add(new_entry)
         db.session.commit()
-    return render_template('medication.html', medications=medications)
+        return redirect(url_for('medication_table'))
+    return render_template('medication.html', medications=meds_json.get_meds())
 
 @app.route("/medication_table")
 @login_required
@@ -65,11 +58,18 @@ def medication_table():
 def add_new_medication():
     form = AddNewMedicationForm()
     if request.method == "POST":
+        med = request.form.get('medication')
+        dose = request.form.get('dose')
         if form.validate_on_submit():
-            with open('instance/medication.csv', 'a') as fd:
-                fd.write(f"{request.form.get('medication')}\n")
+            meds_json.add_new_med(med, dose)
             return redirect(url_for('medication'))
     return render_template('/add_new_medication.html', form=form, errors=form.errors)
+
+@app.route('/delete_medication_<med>', methods=['GET', 'POST'])
+@login_required
+def delete_medication(med):
+    meds_json.delete_med(med)
+    return redirect(url_for('medication'))
 
 @app.route('/submit', methods=['POST'])
 @login_required

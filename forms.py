@@ -1,4 +1,5 @@
 from sqlalchemy import select
+from wtforms import FloatField
 from wtforms.fields import PasswordField, SubmitField, StringField, IntegerField, TextAreaField, BooleanField
 from wtforms.fields.choices import SelectField
 from wtforms.fields.simple import BooleanField
@@ -26,6 +27,7 @@ class BloodPressureForm(FlaskForm):
 
 class AddNewMedicationForm(FlaskForm):
     medication = StringField('Medication', validators=[DataRequired()])
+    dose = FloatField('Dose', validators=[DataRequired()])
     submit = SubmitField()
 
     def __init__(self, *args, **kwargs):
