@@ -107,7 +107,7 @@ def login():
     else:
         return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
 
-
+'''
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -120,6 +120,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
     return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
+'''
 
 @app.route('/logout')
 def logout():
