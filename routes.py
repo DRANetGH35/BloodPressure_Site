@@ -127,6 +127,10 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.errorhandler(401)
+@app.errorhandler(404)
 def page_not_found(e):
-    return render_template('errors/401.html')
+    return render_template('errors/404.html'), 404
+
+@app.errorhandler(401)
+def unauthorized(e):
+    return render_template('errors/401.html'), 401
