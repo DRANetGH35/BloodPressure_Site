@@ -6,9 +6,9 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from extensions import db
-from forms import BloodPressureForm, AddNewMedicationForm, LoginForm, RegisterForm
+from forms import BloodPressureForm, AddNewMedicationForm, LoginForm, RegisterForm, NewNoteForm
 from medication import MedsJSON
-from models import User, BloodPressure, Medication
+from models import User, BloodPressure, Medication, Note
 from app import create_app
 
 meds_json = MedsJSON(f"instance/medication.json")
@@ -85,6 +85,32 @@ def add_new_medication():
 def delete_medication(med):
     meds_json.delete_med(med)
     return redirect(url_for('medication'))
+
+@app.route('/new_note', methods=['GET', 'POST'])
+def new_note():
+    form = NewNoteForm()
+    if request.method == "POST":
+        if not form.validate_on_submit():
+            return render_template('new_note.html', errors=form.errors)
+        subject = request.form.get('subject')
+        content = request.form.get('content')
+        new_note = Note(subject=subject, content=content)
+        db.session.add(new_note)
+        db.session.commit()
+        return redirect(url_for('notes'))
+    return render_template('new_note.html', form=form, errors=form.errors)
+
+@app.route('/notes')
+def notes():
+    table_data = db.session.query(Note).all()
+    return render_template('note_table.html', table_data=table_data)
+
+@app.route("/delete_note/<note_id>")
+def delete_note(note_id):
+    note = Note.query.get(note_id)
+    db.session.delete(note)
+    db.session.commit()
+    return redirect(url_for('notes'))
 
 @app.route('/submit', methods=['POST'])
 @login_required

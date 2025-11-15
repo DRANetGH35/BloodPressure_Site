@@ -22,3 +22,8 @@ class Medication(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     time: Mapped[str] = mapped_column(String, nullable=False)
     medication: Mapped[String] = mapped_column(String, nullable=False)
+
+class Note(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    subject: Mapped[str] = mapped_column(String, nullable=False)
+    content: Mapped[str] = mapped_column(String, nullable=False)

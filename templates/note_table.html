@@ -1,0 +1,29 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends "base.html" %} {% block content %}
+
+{% include 'navbar.html' %}
+<div class="container">
+<table class="table">
+    <tr>
+        <td>Subject</td>
+        <td>Content</td>
+        <td></td>
+    </tr>
+{% for entry in table_data %}
+    <tr>
+        <td>{{ entry.subject }}</td>
+        <td>{{ entry.content }}</td>
+        <td><a href="delete_note/{{ entry.id }}">Delete</a></td>
+    </tr>
+{% endfor %}
+    <tr>
+        <td><a href="/new_note">Add Note</a></a></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}

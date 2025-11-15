@@ -43,6 +43,13 @@ class LoginForm(FlaskForm):
         super().__init__(*args, **kwargs)
         self.stored_password = stored_password
 
+class NewNoteForm(FlaskForm):
+    subject = SelectField('Choose an option',
+                       choices=[('Symptom', 'Symptom'), ('Concern', 'Concern'), ('Question', 'Question'), ('Other', 'Other')],
+                       validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField()
+
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
