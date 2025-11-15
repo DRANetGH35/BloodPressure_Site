@@ -1,10 +1,10 @@
 from datetime import datetime
 import csv
-from flask import render_template, request, redirect, url_for, flash
+from flask import abort, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_user, logout_user, login_required
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from functools import wraps
 from extensions import db
 from forms import BloodPressureForm, AddNewMedicationForm, LoginForm, RegisterForm
 from medication import MedsJSON
@@ -21,6 +21,21 @@ def user_exists(username):
     except AttributeError:
         return False
     return False
+
+def logged_in_as_admin():
+    return current_user.is_authenticated and current_user.is_admin == True
+
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        #If id is not 1 then return abort with 403 error
+        if current_user is None:
+            return abort(401)
+        if not logged_in_as_admin():
+            return abort(403)
+        #Otherwise continue with the route function
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 @login_required
@@ -107,8 +122,9 @@ def login():
     else:
         return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
 
-'''
+
 @app.route('/register', methods=['GET', 'POST'])
+@admin_only
 def register():
     form = RegisterForm()
     if request.method == 'POST':
@@ -120,7 +136,6 @@ def register():
         db.session.add(new_user)
         db.session.commit()
     return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
-'''
 
 @app.route('/logout')
 def logout():
@@ -134,3 +149,7 @@ def page_not_found(e):
 @app.errorhandler(401)
 def unauthorized(e):
     return render_template('errors/401.html'), 401
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('errors/403.html'), 403
