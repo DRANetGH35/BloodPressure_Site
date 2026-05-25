@@ -1,6 +1,6 @@
 from datetime import datetime
 import csv
-from flask import abort, render_template, request, redirect, url_for, flash
+from flask import abort, render_template, request, redirect, url_for, flash, send_file
 from flask_login import current_user, login_user, logout_user, login_required
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,9 +10,17 @@ from forms import BloodPressureForm, AddNewMedicationForm, LoginForm, RegisterFo
 from medication import MedsJSON
 from models import User, BloodPressure, Medication, Note
 from app import create_app
+from sqlalchemy import inspect
+import pandas as pd
+
 
 meds_json = MedsJSON(f"instance/medication.json")
 app = create_app()
+
+def db_to_excel():
+    df = pd.read_sql(sql="blood_pressure", con=db.engine)
+    df.to_excel(f'static/database.xlsx', index=False)
+
 
 def user_exists(username):
     try:
@@ -50,6 +58,16 @@ def table():
     for entry in table_data:
         print(entry.systolic, entry.diastolic)
     return render_template('table.html', table=table_data)
+
+
+@app.route('/download_table')
+@login_required
+def donwload_table():
+    table_data = db.session.query(BloodPressure).all()
+    path = "static/database.xlsx"
+    db_to_excel()
+    return send_file(path, as_attachment=True)
+    
 
 @app.route('/medication', methods=['GET', 'POST'])
 @login_required
