@@ -5,16 +5,21 @@
 {% include 'navbar.html' %}
 <div class="container" style="text-align: center; padding: 20px;">
     <a class="btn btn-secondary" href="/medication_table" style="font-size:30px">View Table</a>
-    <div class="container" style="max-width: 400px; margin: 20px auto 20px; padding: 20px; border-radius: 10px; border: 1px solid grey;">
+
 
     <form class="align-items-center" style="padding:20px;" action="/medication" method="post">
-        {% for medication in medications %}
-        <table style="margin-left:auto; margin-right:auto;">
-        <tr>
-        <td><input style="margin:5px" class="form-check-input" type="checkbox" id="{{ medication }}" name="medication" value="{{ medication }} ({{ medications[medication] }}mg)"></td>
-        <td><label style="margin:5px" for="{{ medication }}">{{ medication }} ({{medications[medication]}}mg)</label></td>
-        <td><a href="/delete_medication_{{ medication }}">delete</a></td>
-        {% endfor %}
+
+        {% for category, meds in medications.items() %}
+        <div class="container" style="max-width: 400px; margin: 20px auto 20px; padding: 20px; border-radius: 10px; border: 1px solid grey;">
+
+            <p>{{ category }}</p>
+            {% for medication in meds['meds'] %}
+                <table style="margin-left:auto; margin-right:auto;">
+                <tr>
+                <td><input style="margin:5px" class="form-check-input" type="checkbox" id="{{ medication }}" name="medication" value="{{ medication.name }} ({{ medication.dose }}mg)">{{ medication.name }}  ({{ medication.dose }}mg)</td>
+                <td><a href="/delete_medication/{{ category }}/{{ medication.name }}">delete</a></td>
+
+            {% endfor %}
         </tr>
         <tr>
         <td></td><td></td>
@@ -23,16 +28,20 @@
         <td>-----</td><td>-----</td>
         </tr>
         <tr>
-        <td></td><td><a class="" href="/add_new_medication">Add Med</a></td>
+        <td></td><td><a class="" href="/add_new_medication/{{ category }}">Add Med</a></td>
         </tr>
         </table>
+        </div>
+
+        {% endfor %}
         <br>
-        <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 15px;">
-    </form>
+    <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 15px; margin-top:50px;">
+        </form>
+        <div class="container" style="display:flex; justify-content:center; align-items:center; flex-direction:column;">
+        <a href="/add_new_category">Add new category</a>
 
 
-</div>
-
+        </div>
 </div>
 {% include 'footer.html' %}
 

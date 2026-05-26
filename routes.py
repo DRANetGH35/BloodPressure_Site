@@ -86,22 +86,31 @@ def medication_table():
     table_data = db.session.query(Medication).all()
     return render_template('medication_table.html', table_data=table_data)
 
-@app.route("/add_new_medication", methods=['GET', 'POST'])
+@app.route("/add_new_medication/<category>", methods=['GET', 'POST'])
 @login_required
-def add_new_medication():
+def add_new_medication(category):
     form = AddNewMedicationForm()
     if request.method == "POST":
         med = request.form.get('medication')
         dose = request.form.get('dose')
         if form.validate_on_submit():
-            meds_json.add_new_med(med, dose)
+            meds_json.add_new_med(category, med, dose)
             return redirect(url_for('medication'))
     return render_template('/add_new_medication.html', form=form, errors=form.errors)
 
-@app.route('/delete_medication_<med>', methods=['GET', 'POST'])
+@app.route('/add_new_category', methods=['GET', 'POST'])
 @login_required
-def delete_medication(med):
-    meds_json.delete_med(med)
+def add_new_category():
+    if request.method == 'POST':
+        category = request.form.get('category')
+        meds_json.add_new_category(category)
+        return redirect(url_for('medication'))
+    return render_template('add_new_category.html')
+
+@app.route('/delete_medication/<category>/<med>', methods=['GET', 'POST'])
+@login_required
+def delete_medication(category, med):
+    meds_json.delete_med(category, med)
     return redirect(url_for('medication'))
 
 @app.route('/new_note', methods=['GET', 'POST'])

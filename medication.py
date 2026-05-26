@@ -37,17 +37,28 @@ class MedsJSON:
         data = json.load(open(self.filename, 'r'))
         return dict(data)
 
-    def add_new_med(self, new_med, dose):
+    def add_new_med(self, category, new_med, dose):
         data = json.load(open(self.filename, 'r'))
-        data[f"{new_med}"] = dose
+        data[category]["meds"].append({"name": new_med, "dose": dose})
+        json.dump(data, open(self.filename, 'w'))
+
+    def add_new_category(self, category):
+        data = json.load(open(self.filename, 'r'))
+        data[category] = {"meds": []}
         json.dump(data, open(self.filename, 'w'))
 
     def med_names(self):
         return list(self.get_meds().keys())
 
-    def delete_med(self, med):
+    def delete_med(self, category, med_name):
+        print(med_name)
         data = json.load(open(self.filename, 'r'))
-        del data[f"{med}"]
+        category = data[category]
+        for medication in category['meds']:
+            if medication['name'] == med_name:
+                category['meds'].remove(medication)
+        json.dump(data, open(self.filename, 'w'))
+
         json.dump(data, open(self.filename, 'w'))
 meds_json = MedsJSON('instance/medication.json')
 
