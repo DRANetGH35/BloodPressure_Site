@@ -1,0 +1,16 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends "base.html" %} {% block content %}
+
+
+{% include 'navbar.html' %}
+<div class="container">
+    <form action="/add_new_category" method="post">
+        <label>Category:
+        <input class="form-control" type="text" name="category" placeholder="category name">
+        </label>
+        <input class="btn btn-primary" type="submit">
+    </form>
+</div>
+{% include 'footer.html' %}
+
+{% endblock %}
