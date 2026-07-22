@@ -3,7 +3,7 @@ from datetime import timedelta
 from flask_login import current_user, LoginManager
 from sqlalchemy import select
 
-from extensions import db, login_manager, bootstrap
+from extensions import db, login_manager, bootstrap, migrate
 from models import User
 
 
@@ -17,6 +17,7 @@ def create_app():
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)  # Time the user out after 30 minutes
 
     db.init_app(app)
+    migrate.init_app(app, db, render_as_batch=True)
     login_manager.init_app(app)
     bootstrap.init_app(app)
 
@@ -34,8 +35,8 @@ def create_app():
             return None
 
 
-    with app.app_context():
-        db.create_all()
+    #with app.app_context():
+    #    db.create_all()
 
 
 
