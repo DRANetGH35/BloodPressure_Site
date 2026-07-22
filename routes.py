@@ -8,9 +8,9 @@ from functools import wraps
 from extensions import db
 from forms import BloodPressureForm, AddNewMedicationForm, LoginForm, RegisterForm, NewNoteForm
 from medication import MedsJSON
-from models import User, BloodPressure, Medication, Note
+from models import User, BloodPressure, Medication, Note, MedicationEntry, Category
 from app import create_app
-from sqlalchemy import inspect
+from sqlalchemy import inspect, select
 import pandas as pd
 
 
@@ -78,7 +78,7 @@ def medication():
         db.session.add(new_entry)
         db.session.commit()
         return redirect(url_for('medication_table'))
-    return render_template('medication.html', medications=meds_json.get_meds())
+    return render_template('medication.html', categories=db.session.execute(select(Category)).scalars().all(), medications=db.session.execute(select(MedicationEntry)).scalars().all())
 
 @app.route("/medication_table")
 @login_required
@@ -86,15 +86,17 @@ def medication_table():
     table_data = db.session.query(Medication).all()
     return render_template('medication_table.html', table_data=table_data)
 
-@app.route("/add_new_medication/<category>", methods=['GET', 'POST'])
+@app.route("/add_new_medication/<category_id>", methods=['GET', 'POST'])
 @login_required
-def add_new_medication(category):
+def add_new_medication(category_id):
     form = AddNewMedicationForm()
     if request.method == "POST":
         med = request.form.get('medication')
         dose = request.form.get('dose')
         if form.validate_on_submit():
-            meds_json.add_new_med(category, med, dose)
+            new_med_entry = MedicationEntry(category_id=category_id, name=med, dose_mg=dose)
+            db.session.add(new_med_entry)
+            db.session.commit()
             return redirect(url_for('medication'))
     return render_template('/add_new_medication.html', form=form, errors=form.errors)
 
@@ -102,15 +104,19 @@ def add_new_medication(category):
 @login_required
 def add_new_category():
     if request.method == 'POST':
-        category = request.form.get('category')
-        meds_json.add_new_category(category)
+        category_name = request.form.get('category')
+        new_category = Category(name=category_name)
+        db.session.add(new_category)
+        db.session.commit()
         return redirect(url_for('medication'))
     return render_template('add_new_category.html')
 
-@app.route('/delete_medication/<category>/<med>', methods=['GET', 'POST'])
+@app.route('/delete_medication/<medication_id>', methods=['GET', 'POST'])
 @login_required
-def delete_medication(category, med):
-    meds_json.delete_med(category, med)
+def delete_medication(medication_id):
+    medication_to_delete = db.session.execute(select(MedicationEntry).where(MedicationEntry.id == medication_id)).scalar()
+    db.session.delete(medication_to_delete)
+    db.session.commit()
     return redirect(url_for('medication'))
 
 @app.route('/new_note', methods=['GET', 'POST'])
