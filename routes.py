@@ -1,6 +1,6 @@
 from datetime import datetime
 import csv
-from flask import abort, render_template, request, redirect, url_for, flash, send_file
+from flask import abort, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -61,6 +61,31 @@ def table():
         print(entry.systolic, entry.diastolic)
     return render_template('table.html', table=table_data)
 
+@app.route('/graph_table')
+def graph_table():
+    table_data = BloodPressure.query.order_by(BloodPressure.created.desc()).all()
+    labels = [entry.created for entry in table_data]
+    systolic = [entry.systolic for entry in table_data]
+    diastolic = [entry.diastolic for entry in table_data]
+    pulse = [entry.pulse for entry in table_data]
+    return render_template('graph_table.html', labes=labels, systolic=systolic, diastolic=diastolic, pulse=pulse)
+
+@app.route('/fetch_table_data')
+def fetch_table_data():
+    table_data = BloodPressure.query.order_by(BloodPressure.created.desc()).all()
+    labels = []
+    systolic = []
+    diastolic = []
+    pulse = []
+    for entry in table_data:
+        labels.append(entry.created)
+        systolic.append(entry.systolic)
+        diastolic.append(entry.diastolic)
+        pulse.append(entry.pulse)
+    return jsonify({"labels": labels,
+                    "systolic": systolic,
+                    "diastolic": diastolic,
+                    "pulse": pulse})
 
 @app.route('/download_table')
 @login_required
