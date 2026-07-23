@@ -7,6 +7,7 @@
 <table class="table">
     <tr>
         <td>Time</td>
+        <td>Created</td>
         <td>Systolic</td>
         <td>Diastolic</td>
         <td>Pulse</td>
@@ -15,6 +16,7 @@
 {% for entry in table %}
     <tr>
         <td>{{ entry.time }}</td>
+        <td>{{ entry.created}} </td>
         <td>{{ entry.systolic }}</td>
         <td>{{ entry.diastolic }}</td>
         <td>{{ entry.pulse }}</td>
@@ -22,6 +24,7 @@
     </tr>
 {% endfor %}
 </table>
+    <a href="/populate_created_values" class="btn btn-link">DO THA THANG</a>
 </div>
 
 {% include 'footer.html' %}

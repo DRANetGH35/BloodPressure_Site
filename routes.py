@@ -196,6 +196,22 @@ def register():
         db.session.commit()
     return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
 
+@app.route('/populate_created_values')
+def populate_created_values():
+    all_entries = db.session.query(BloodPressure).all()
+    for entry in all_entries:
+        entry.created = datetime.strptime(entry.time, '%Y-%m-%d %H:%M:%S')
+        db.session.commit()
+    return redirect(url_for('table'))
+
+@app.route('/populate_created_meds')
+def populate_created_meds():
+    all_entries = db.session.query(Medication).all()
+    for entry in all_entries:
+        entry.created = datetime.strptime(entry.time, '%Y-%m-%d %H:%M:%S')
+        db.session.commit()
+    return redirect(url_for('medication_table'))
+
 @app.route('/logout')
 def logout():
     logout_user()

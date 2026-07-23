@@ -1,7 +1,8 @@
 from flask_login import UserMixin
-from sqlalchemy import Integer, String, Boolean, Float, ForeignKey
+from sqlalchemy import Integer, String, Boolean, Float, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
+import datetime
 
 from extensions import db
 
@@ -21,13 +22,15 @@ class BloodPressure(db.Model):
     diastolic: Mapped[int] = mapped_column(Integer, nullable=False)
     pulse: Mapped[int] = mapped_column(Integer, nullable=False)
     notes: Mapped[String] = mapped_column(String, nullable=True)
-    time: Mapped[str] = mapped_column(String, nullable=False)
+    time: Mapped[str] = mapped_column(String, nullable=True)
+    created: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
 class Medication(db.Model):
     __tablename__ = "medication"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    time: Mapped[str] = mapped_column(String, nullable=False)
+    time: Mapped[str] = mapped_column(String, nullable=True)
+    created: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
     medication: Mapped[String] = mapped_column(String, nullable=False)
 
 class Note(db.Model):
