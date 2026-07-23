@@ -73,8 +73,8 @@ def donwload_table():
 @login_required
 def medication():
     if request.method == "POST":
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        new_entry = Medication(time=now, medication=str(request.form.getlist('medication')))
+        now = datetime.now()
+        new_entry = Medication(created=now, medication=str(request.form.getlist('medication')))
         db.session.add(new_entry)
         db.session.commit()
         return redirect(url_for('medication_table'))
@@ -154,11 +154,11 @@ def submit():
         diastolic = request.form.get('diastolic')
         pulse = request.form.get('pulse')
         notes = request.form.get('notes')
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now = datetime.now()
         new_entry = BloodPressure(systolic=systolic,
                                   diastolic=diastolic,
                                   pulse=pulse,
-                                  time=now,
+                                  created=now,
                                   notes=notes)
         db.session.add(new_entry)
         db.session.commit()
