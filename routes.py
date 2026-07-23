@@ -54,7 +54,9 @@ def index():
 @app.route('/table')
 @login_required
 def table():
-    table_data = db.session.query(BloodPressure).all()
+    page = 1
+    per_page = 25
+    table_data = BloodPressure.query.order_by(BloodPressure.created.desc()).paginate(page=page, per_page=per_page, error_out=False)
     for entry in table_data:
         print(entry.systolic, entry.diastolic)
     return render_template('table.html', table=table_data)
