@@ -6,18 +6,15 @@
 <table class="table">
     <tr>
         <td>Time</td>
-        <td>Created</td>
         <td>Medication</td>
     </tr>
 {% for entry in table_data %}
     <tr>
-        <td>{{ entry.time }}</td>
         <td>{{ entry.created }}</td>
         <td>{{ entry.medication }}</td>
     </tr>
 {% endfor %}
 </table>
-    <a href="/populate_created_meds" class="btn btn-link">DO THA THANG</a>
 </div>
 
 {% include 'footer.html' %}
