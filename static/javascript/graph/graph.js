@@ -1,4 +1,4 @@
-url = `/fetch_table_data`
+url = `/fetch_graph_data`
 
 const ctx = document.getElementById("dbChart").getContext('2d');
 fetch(url).then(response => response.json()).then(data => {

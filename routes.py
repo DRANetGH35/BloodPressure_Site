@@ -82,6 +82,23 @@ def fetch_table_data(page):
                'notes': entry.notes} for entry in table_data]
     return jsonify({"data": results})
 
+@app.route('/fetch_graph_data')
+def fetch_graph_data():
+    table_data = BloodPressure.query.order_by(BloodPressure.created.asc()).all()
+    labels = []
+    systolic = []
+    diastolic = []
+    pulse = []
+    for entry in table_data:
+        labels.append(entry.created)
+        systolic.append(entry.systolic)
+        diastolic.append(entry.diastolic)
+        pulse.append(entry.pulse)
+    return jsonify({"labels": labels,
+                    "systolic": systolic,
+                    "diastolic": diastolic,
+                    "pulse": pulse})
+
 @app.route('/download_table')
 @login_required
 def donwload_table():
