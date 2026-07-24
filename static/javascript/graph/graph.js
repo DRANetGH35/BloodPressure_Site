@@ -2,11 +2,6 @@ url = `/fetch_graph_data`
 
 const ctx = document.getElementById("dbChart").getContext('2d');
 fetch(url).then(response => response.json()).then(data => {
-    console.log(data.labels);
-    console.log(data.systolic);
-    console.log(data.diastolic);
-    console.log(data.pulse);
-
     new Chart(ctx, {
     type: 'line',
     data: {
