@@ -204,6 +204,13 @@ def submit():
         return render_template('success.html')
     return render_template('index.html', form=form, errors=form.errors)
 
+@app.route('/delete_bloodpressure/<int:id>')
+def delete_bloodpressure(id):
+    entry = db.session.execute(select(BloodPressure).where(BloodPressure.id == id)).scalar()
+    db.session.delete(entry)
+    db.session.commit()
+    return redirect(request.referrer)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()

@@ -34,6 +34,7 @@ function changePage(){
             let diastolicCell = newRow.insertCell(2);
             let pulseCell = newRow.insertCell(3);
             let noteCell = newRow.insertCell(4);
+            let btnCell = newRow.insertCell(5);
 
             let timeCreated = new Date(entry.created)
             timeCell.textContent = timeCreated.toLocaleString('en-US');
@@ -41,6 +42,7 @@ function changePage(){
             diastolicCell.textContent = entry.diastolic;
             pulseCell.textContent = entry.pulse;
             noteCell.textContent = entry.notes;
+            btnCell.innerHTML = `<a class='btn btn-link' href=/delete_bloodpressure/${entry.id}>delete<a>`;
         }
     })
 }
