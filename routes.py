@@ -70,22 +70,17 @@ def graph_table():
     pulse = [entry.pulse for entry in table_data]
     return render_template('graph_table.html', labes=labels, systolic=systolic, diastolic=diastolic, pulse=pulse)
 
-@app.route('/fetch_table_data')
-def fetch_table_data():
-    table_data = BloodPressure.query.order_by(BloodPressure.created.desc()).all()
-    labels = []
-    systolic = []
-    diastolic = []
-    pulse = []
-    for entry in table_data:
-        labels.append(entry.created)
-        systolic.append(entry.systolic)
-        diastolic.append(entry.diastolic)
-        pulse.append(entry.pulse)
-    return jsonify({"labels": labels,
-                    "systolic": systolic,
-                    "diastolic": diastolic,
-                    "pulse": pulse})
+@app.route('/fetch_table_data/<int:page>')
+def fetch_table_data(page):
+    per_page = 25
+    table_data = BloodPressure.query.order_by(BloodPressure.created.desc()).paginate(page=page, per_page=per_page, error_out=False)
+    results = [{'id': entry.id,
+               'created': entry.created,
+               'systolic': entry.systolic,
+               'diastolic': entry.diastolic,
+               'pulse': entry.pulse,
+               'notes': entry.notes} for entry in table_data]
+    return jsonify({"data": results})
 
 @app.route('/download_table')
 @login_required
