@@ -3,7 +3,7 @@ const pageUpBtn = document.getElementById('page-up')
 const pageDownBtn = document.getElementById('page-down')
 const pageNumInput = document.getElementById('page-num-input')
 
-pageNumInput.addEventListener('keyup', changePage)
+pageNumInput.addEventListener('change', changePage)
 pageUpBtn.addEventListener('click', pageUp)
 pageDownBtn.addEventListener('click', pageDown)
 
