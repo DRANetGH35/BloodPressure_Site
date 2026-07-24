@@ -20,7 +20,28 @@ fetch(url).then(response => response.json()).then(data => {
             tension: 0.3,
             fill: true,
             pointRadius: 3
-        }]
+            },
+            {
+            label: 'Diastolic',
+            data: data.diastolic,
+            borderColor: 'rgb(246, 46, 59)',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true,
+            pointRadius: 3
+            },
+            {
+            label: 'Pulse',
+            data: data.diastolic,
+            borderColor: 'rgb(50, 246, 59)',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true,
+            pointRadius: 3
+            }
+        ]
     },
     options:{
         responsive: true,
