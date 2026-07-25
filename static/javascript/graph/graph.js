@@ -1,11 +1,10 @@
 url = `/fetch_graph_data`
-
 const ctx = document.getElementById("dbChart").getContext('2d');
 fetch(url).then(response => response.json()).then(data => {
     new Chart(ctx, {
     type: 'line',
     data: {
-        labels: data.labels,
+        labels: data.labels_formatted,
         datasets: [{
             label: 'Systolic',
             data: data.systolic,
