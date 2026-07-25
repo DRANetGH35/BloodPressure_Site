@@ -84,9 +84,10 @@ def fetch_table_data(page):
 
 @app.route('/fetch_graph_data')
 def fetch_graph_data():
-    window = 7
+    window = 30
     table_data = BloodPressure.query.order_by(BloodPressure.created.asc()).all()
     labels = []
+    labels_formatted = []
     systolic = []
     systolic_rolling = []
     diastolic = []
@@ -95,6 +96,7 @@ def fetch_graph_data():
     pulse_rolling = []
     for entry in table_data:
         labels.append(entry.created)
+        labels_formatted.append(entry.created.strftime("%m/%d/%Y"))
         systolic.append(entry.systolic)
         diastolic.append(entry.diastolic)
         pulse.append(entry.pulse)
@@ -117,6 +119,7 @@ def fetch_graph_data():
             window_vals = pulse[i - window + 1: i + 1]
             pulse_rolling.append(round(sum(window_vals) / window, 2))
     return jsonify({"labels": labels,
+                    "labels_formatted": labels_formatted,
                     "systolic": systolic,
                     "systolic_rolling": systolic_rolling,
                     "diastolic": diastolic,
