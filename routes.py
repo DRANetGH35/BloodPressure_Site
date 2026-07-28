@@ -111,8 +111,7 @@ def fetch_graph_data():
         systolic.append(entry.systolic)
         diastolic.append(entry.diastolic)
         pulse.append(entry.pulse)
-    return jsonify({"table_data": table_data,
-                    "labels": labels,
+    return jsonify({"labels": labels,
                     "labels_formatted": labels_formatted,
                     "systolic": systolic,
                     "systolic_rolling": systolic_rolling,
