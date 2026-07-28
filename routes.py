@@ -94,31 +94,25 @@ def fetch_graph_data():
     diastolic_rolling = []
     pulse = []
     pulse_rolling = []
-    for entry in table_data:
+    for i, entry in enumerate(table_data):
+        if i < window - 1:
+            systolic_rolling.append(None)
+            diastolic_rolling.append(None)
+            pulse_rolling.append(None)
+        else:
+            systolic_window_vals = systolic[i - window + 1: i + 1]
+            diastolic_window_vals = diastolic[i - window + 1: i + 1]
+            pulse_window_vals = pulse[i - window + 1: i + 1]
+            systolic_rolling.append(round(sum(systolic_window_vals) / window, 2))
+            diastolic_rolling.append(round(sum(diastolic_window_vals) / window, 2))
+            pulse_rolling.append(round(sum(pulse_window_vals) / window, 2))
         labels.append(entry.created)
         labels_formatted.append(entry.created.strftime("%m/%d/%Y"))
         systolic.append(entry.systolic)
         diastolic.append(entry.diastolic)
         pulse.append(entry.pulse)
-    for i, entry in enumerate(systolic):
-        if i < window - 1:
-            systolic_rolling.append(None)
-        else:
-            window_vals = systolic[i - window + 1 : i + 1]
-            systolic_rolling.append(round(sum(window_vals) /window, 2))
-    for i, entry in enumerate(diastolic):
-        if i < window - 1:
-            diastolic_rolling.append(None)
-        else:
-            window_vals = diastolic[i - window + 1 : i + 1]
-            diastolic_rolling.append(round(sum(window_vals) /window, 2))
-    for i, entry in enumerate(pulse):
-        if i < window - 1:
-            pulse_rolling.append(None)
-        else:
-            window_vals = pulse[i - window + 1: i + 1]
-            pulse_rolling.append(round(sum(window_vals) / window, 2))
-    return jsonify({"labels": labels,
+    return jsonify({"table_data": table_data,
+                    "labels": labels,
                     "labels_formatted": labels_formatted,
                     "systolic": systolic,
                     "systolic_rolling": systolic_rolling,
