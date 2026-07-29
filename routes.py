@@ -86,39 +86,7 @@ def fetch_table_data(page):
 def fetch_graph_data():
     window = 30
     table_data = BloodPressure.query.order_by(BloodPressure.created.asc()).all()
-    labels = []
-    labels_formatted = []
-    systolic = []
-    systolic_rolling = []
-    diastolic = []
-    diastolic_rolling = []
-    pulse = []
-    pulse_rolling = []
-    for i, entry in enumerate(table_data):
-        if i < window - 1:
-            systolic_rolling.append(None)
-            diastolic_rolling.append(None)
-            pulse_rolling.append(None)
-        else:
-            systolic_window_vals = systolic[i - window + 1: i + 1]
-            diastolic_window_vals = diastolic[i - window + 1: i + 1]
-            pulse_window_vals = pulse[i - window + 1: i + 1]
-            systolic_rolling.append(round(sum(systolic_window_vals) / window, 2))
-            diastolic_rolling.append(round(sum(diastolic_window_vals) / window, 2))
-            pulse_rolling.append(round(sum(pulse_window_vals) / window, 2))
-        labels.append(entry.created)
-        labels_formatted.append(entry.created.strftime("%m/%d/%Y"))
-        systolic.append(entry.systolic)
-        diastolic.append(entry.diastolic)
-        pulse.append(entry.pulse)
-    return jsonify({"labels": labels,
-                    "labels_formatted": labels_formatted,
-                    "systolic": systolic,
-                    "systolic_rolling": systolic_rolling,
-                    "diastolic": diastolic,
-                    "diastolic_rolling": diastolic_rolling,
-                    "pulse": pulse,
-                    "pulse_rolling": pulse_rolling})
+    return jsonify([bloodpressure.to_dict() for bloodpressure in table_data])
 
 @app.route('/download_table')
 @login_required

@@ -24,6 +24,15 @@ class BloodPressure(db.Model):
     notes: Mapped[String] = mapped_column(String, nullable=True)
     created: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "systolic": self.systolic,
+            "diastolic": self.diastolic,
+            "pulse": self.pulse,
+            "notes": self.notes,
+            "created": self.created
+        }
 class Medication(db.Model):
     __tablename__ = "medication"
 
