@@ -7,7 +7,16 @@
 <div>
     <canvas id="dbChart" height="120"></canvas>
 </div>
-
+<div id="controls">
+<div id="rolling-average">
+    <p>Rolling average</p>
+    <select>
+        <option value="0">None</option>
+        <option value="7">Week</option>
+        <option value="30">Month</option>
+    </select>
+</div>
+</div>
 <script src="{{ url_for('static', filename='javascript/graph/graph.js') }}"></script>
 
 {% include 'footer.html' %}
