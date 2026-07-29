@@ -11,7 +11,9 @@ fetch(url).then(response => response.json()).then(data => {
     pulse_rolling = []
 
     data.forEach((element, i) => {
-        labels.push(element['created'])
+        const dateObj = new Date(element['created'])
+        const formattedDate = new Intl.DateTimeFormat('en-US').format(dateObj)
+        labels.push(formattedDate)
         systolic.push(element['systolic'])
         diastolic.push(element['diastolic'])
         pulse.push(element['pulse'])
