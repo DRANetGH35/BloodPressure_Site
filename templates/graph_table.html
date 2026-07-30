@@ -10,20 +10,37 @@
 <div id="controls" style="display:flex; flex-direction:row;">
 <div id="rolling-average" class="px-4">
     <p>Rolling average</p>
-    <select id="window-select">
+    <select class="form-select" id="window-select">
         <option value="0">None</option>
         <option value="7">Week</option>
         <option value="30">Month</option>
     </select>
 </div>
-<div id="time">
+<div id="time" class="px-4">
     <p>Time</p>
-    <select id="time-select">
-        <option value="0">All</option>
+    <select class="form-select" id="time-select">
+        <option value="10000">All</option>
         <option value="365">Year</option>
+        <option value="183">6 Months</option>
+        <option value="90">3 Months</option>
+        <option value="60">2 Months</option>
         <option value="30">Month</option>
         <option value="7">Week</option>
     </select>
+</div>
+<div style="display:flex; padding:20px 50px; flex-direction:column;" class="form-check">
+    <div>
+    <input class="form-check-input" type="checkbox" id="systolic" checked>
+    <label class="form-check-label" for="systolic">Systolic</label>
+    </div>
+    <div>
+    <input class="form-check-input" type="checkbox" id="diastolic" checked>
+    <label class="form-check-label" for="diastolic">Diastolic</label>
+    </div>
+    <div>
+    <input class="form-check-input" type="checkbox" id="pulse" checked>
+    <label class="form-check-label" for="pulse">Pulse</label>
+    </div>
 </div>
 </div>
 <script src="{{ url_for('static', filename='javascript/graph/graph.js') }}"></script>

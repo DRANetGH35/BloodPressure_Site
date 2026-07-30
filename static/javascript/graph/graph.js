@@ -4,19 +4,16 @@ const ctx = document.getElementById("dbChart").getContext('2d');
 TimeSelect.addEventListener('change', updateGraph)
 WindowSelect.addEventListener('change', updateGraph)
 
-async function ParseResponse(window){
+async function ParseResponse(rolling_window, days){
     let response_data
-    window = WindowSelect.value
     url = `/fetch_graph_data`
     labels = []
     systolic = []
-    systolic_rolling = []
     diastolic = []
-    diastolic_rolling = []
     pulse = []
-    pulse_rolling = []
     const response = await fetch(url)
-    const data = await response.json()
+    let data = await response.json()
+    data = timeLimit(data, days)
     data.forEach((element, i) => {
         const dateObj = new Date(element['created'])
         const formattedDate = new Intl.DateTimeFormat('en-US').format(dateObj)
@@ -24,13 +21,13 @@ async function ParseResponse(window){
         systolic.push(element['systolic'])
         diastolic.push(element['diastolic'])
         pulse.push(element['pulse'])
-
-        if (window !== 0){
-        systolic_rolling = RollingAverageOf(systolic, window)
-        diastolic_rolling = RollingAverageOf(diastolic, window)
-        pulse_rolling = RollingAverageOf(pulse, window)
+    })
+    if (rolling_window !== 0){
+        systolic_rolling = RollingAverageOf(systolic, rolling_window)
+        diastolic_rolling = RollingAverageOf(diastolic, rolling_window)
+        pulse_rolling = RollingAverageOf(pulse, rolling_window)
         }
-        response_data = {
+    response_data = {
         "labels": labels,
         "systolic": systolic,
         "systolic_rolling": systolic_rolling,
@@ -39,11 +36,21 @@ async function ParseResponse(window){
         "pulse": pulse,
         "pulse_rolling": pulse_rolling
     }
-    }
-
-    )
     return response_data
 
+}
+
+function timeLimit(data, days){
+    new_data = []
+    const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000) //days x hours x mins x seconds x ms
+
+    data.forEach((entry, i) => {
+        entryDate = Date.parse(entry.created)
+        if (entryDate > cutoffDate){
+            new_data.push(entry)
+        }
+    })
+    return new_data
 }
 
 function RollingAverageOf(data, window){
@@ -60,14 +67,15 @@ function RollingAverageOf(data, window){
 }
 
 async function updateGraph(){
-    window = 30
+
     const existingChart = Chart.getChart("dbChart")
     if (existingChart){
         existingChart.destroy();
     }
 
-
-    const response = await ParseResponse(window)
+    rolling_window = WindowSelect.value
+    days = TimeSelect.value
+    const response = await ParseResponse(rolling_window, days)
     let cfg = {
     type: 'line',
     data: {
