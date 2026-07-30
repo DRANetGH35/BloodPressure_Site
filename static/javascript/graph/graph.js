@@ -1,8 +1,15 @@
 const TimeSelect = document.getElementById('time-select')
 const WindowSelect = document.getElementById('window-select')
+const SystolicCheck = document.getElementById('systolic-check')
+const DiastolicCheck = document.getElementById('diastolic-check')
+const PulseCheck = document.getElementById('pulse-check')
+
 const ctx = document.getElementById("dbChart").getContext('2d');
 TimeSelect.addEventListener('change', updateGraph)
 WindowSelect.addEventListener('change', updateGraph)
+SystolicCheck.addEventListener('click', updateGraph)
+DiastolicCheck.addEventListener('click', updateGraph)
+PulseCheck.addEventListener('click', updateGraph)
 
 async function ParseResponse(rolling_window, days){
     let response_data
@@ -18,14 +25,15 @@ async function ParseResponse(rolling_window, days){
         const dateObj = new Date(element['created'])
         const formattedDate = new Intl.DateTimeFormat('en-US').format(dateObj)
         labels.push(formattedDate)
-        systolic.push(element['systolic'])
-        diastolic.push(element['diastolic'])
-        pulse.push(element['pulse'])
+        if (SystolicCheck.checked){systolic.push(element['systolic'])}
+        if (DiastolicCheck.checked){diastolic.push(element['diastolic'])}
+        if (PulseCheck.checked){pulse.push(element['pulse'])}
+
     })
     if (rolling_window !== 0){
-        systolic_rolling = RollingAverageOf(systolic, rolling_window)
-        diastolic_rolling = RollingAverageOf(diastolic, rolling_window)
-        pulse_rolling = RollingAverageOf(pulse, rolling_window)
+        if (SystolicCheck.checked){systolic_rolling = RollingAverageOf(systolic, rolling_window)}else{systolic_rolling=null}
+        if (DiastolicCheck.checked){diastolic_rolling = RollingAverageOf(diastolic, rolling_window)}else{diastolic_rolling=null}
+        if (PulseCheck.checked){pulse_rolling = RollingAverageOf(pulse, rolling_window)}else{pulse_rolling=null}
         }
     response_data = {
         "labels": labels,
