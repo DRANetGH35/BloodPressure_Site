@@ -205,7 +205,7 @@ def login():
     if request.method == 'POST':
         user = db.session.execute(db.select(User).where(User.name == request.form.get('username'))).scalar()
         # if user does not exist or password is incorrect
-        if not user_exists(form.username.data) or not check_password_hash(user.password, request.form.get('password')):
+        if not user_exists(request.form.get('username')) or not check_password_hash(user.password, request.form.get('password')):
             flash('Incorrect username or password')
             return redirect(url_for('login'))
         login_user(user)
