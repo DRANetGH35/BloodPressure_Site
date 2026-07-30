@@ -6,7 +6,7 @@ WindowSelect.addEventListener('change', updateGraph)
 
 async function ParseResponse(window){
     let response_data
-    window = 30
+    window = WindowSelect.value
     url = `/fetch_graph_data`
     labels = []
     systolic = []
@@ -24,10 +24,12 @@ async function ParseResponse(window){
         systolic.push(element['systolic'])
         diastolic.push(element['diastolic'])
         pulse.push(element['pulse'])
+
+        if (window !== 0){
         systolic_rolling = RollingAverageOf(systolic, window)
         diastolic_rolling = RollingAverageOf(diastolic, window)
         pulse_rolling = RollingAverageOf(pulse, window)
-
+        }
         response_data = {
         "labels": labels,
         "systolic": systolic,
