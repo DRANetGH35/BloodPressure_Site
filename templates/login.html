@@ -3,16 +3,17 @@
 
 
 {% include 'navbar.html' %}
-
-<div class="container">
-    {{ render_form(form) }}
-    {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in messages %}
-              <p class="flashes">{{ message }}</p>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+<!-- TODO: add form validation js -->
+<div class="outershell">
+    <div class="section">
+        <form class="login-form" action="/login" method="post">
+            <label for="username">Username:</label>
+            <input class="text-field" type="text" id="username" name="username">
+            <label for="password">Password:</label>
+            <input class="text-field" type="password" id="password" name="password">
+            <input class="btn" type="submit">
+        </form>
+    </div>
 </div>
 {% include 'footer.html' %}
 

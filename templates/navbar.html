@@ -1,36 +1,55 @@
 {% block content %}
-<nav class="dark-toggle navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">Home</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li>
-                    <a class="nav-link active" aria-current="page" href="/table">Table</a>
-                </li>
-                <li>
-                    <a class="nav-link active" aria-current="page" href="/medication">Meds</a>
-                </li>
-                <li>
-                    <a class="nav-link active" aria-current="page" href="/notes">Notes</a>
-                </li>
-            </ul>
+<style>
 
-             <ul class="navbar-nav ms-auto">
+    nav{
+        color:white;
+
+    }
+    ul{
+        border-radius: 20px;
+        border-bottom: 2px solid grey;
+        list-style-type:None;
+        margin:0px;
+        padding:0px;
+        overflow:hidden;
+        background-color:rgba(255,255,255,.15)
+    }
+    ul li {
+        float: left;
+    }
+    ul li a {
+        display: block;
+        color: var(--text);
+        text-align:center;
+        padding:14px 16px;
+        text-decoration:None;
+    }
+    ul li a:hover {
+        background-color: var(--accent);
+    }
+</style>
+            <ul>
+                <li>
+                    <a class="navbar-brand" href="/">Home</a>
+                </li>
+                <li>
+                    <a aria-current="page" href="/table">Table</a>
+                </li>
+                <li>
+                    <a aria-current="page" href="/medication">Meds</a>
+                </li>
+                <li>
+                    <a aria-current="page" href="/notes">Notes</a>
+                </li>
                  {% if not current_user.is_authenticated %}
-                <li class="nav-item">
-                 <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                <li style="float:right;">
+                 <a  aria-current="page" href="/login">Login</a>
                 </li>
                  {%  else %}
-                 <li class="nav-item">
-                     <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                 <li style="float:right;">
+                     <a aria-current="page" href="/logout">Logout</a>
                  </li>
                  {% endif %}
             </ul>
 
-        </div>
-    </div>
-</nav>
 {% endblock %}

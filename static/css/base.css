@@ -1,0 +1,59 @@
+
+      :root {
+      --bg: #09090b;
+      --surface: #18181b;
+      --surface-2: #27272a;
+      --border: #3f3f46;
+      --text: #fafafa;
+      --muted: #a1a1aa;
+      --accent: #a78bfa;
+      --accent-2: #c4b5fd;
+      --green: #4ade80;
+      --radius: 10px;
+    }
+#body{
+    margin:auto;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+}
+.btn:hover{
+    background: var(--accent-2);
+    cursor: pointer;
+}
+.btn{
+    color: black;
+    text-decoration:None;
+    border: 1px solid grey;
+    padding: 5px 10px;
+    background: var(--accent);
+    border-radius: 5px;
+}
+.outershell{
+    display:flex;
+.section{
+
+    margin:auto;
+    max-width: 1200px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+.text-label{
+    margin: 5px;
+    padding: 5px;
+}
+.text-field{
+    margin: 5px;
+    padding:5px;
+    border-radius:5px;
+    background-color: var(--surface-2)
+}
+}
+.login-form{
+    display:grid;
+    grid-template-columns: auto auto;
+    padding: 10px;
+}

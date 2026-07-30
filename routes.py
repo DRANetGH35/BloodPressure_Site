@@ -202,19 +202,16 @@ def delete_bloodpressure(id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
     if request.method == 'POST':
-        if not form.validate():
-            return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
-        user = db.session.execute(db.select(User).where(User.name == form.username.data)).scalar()
+        user = db.session.execute(db.select(User).where(User.name == request.form.get('username'))).scalar()
         # if user does not exist or password is incorrect
-        if not user_exists(form.username.data) or not check_password_hash(user.password, form.password.data):
+        if not user_exists(form.username.data) or not check_password_hash(user.password, request.form.get('password')):
             flash('Incorrect username or password')
             return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('index'))
     else:
-        return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
+        return render_template('login.html', current_user=current_user)
 
 
 @app.route('/register', methods=['GET', 'POST'])

@@ -3,11 +3,13 @@
 
 
 {% include 'navbar.html' %}
-
-<div class="container center text-center">
-    <h1>401 Unauthorized</h1>
+<link rel="stylesheet" href="{{url_for('static', filename='css/401.css')}}" />
+<div class="outershell">
+<div class="section">
+    <h1>401 Unauthorized :(</h1>
     <h2>You must login</h2>
     <a class="btn btn-primary" href="/login">Login Here</a>
+</div>
 </div>
 
 {% include 'footer.html' %}
