@@ -7,13 +7,22 @@
 <div>
     <canvas id="dbChart" height="120"></canvas>
 </div>
-<div id="controls">
-<div id="rolling-average">
+<div id="controls" style="display:flex; flex-direction:row;">
+<div id="rolling-average" class="px-4">
     <p>Rolling average</p>
-    <select>
+    <select id="window-select">
         <option value="0">None</option>
         <option value="7">Week</option>
         <option value="30">Month</option>
+    </select>
+</div>
+<div id="time">
+    <p>Time</p>
+    <select id="time-select">
+        <option value="0">All</option>
+        <option value="365">Year</option>
+        <option value="30">Month</option>
+        <option value="7">Week</option>
     </select>
 </div>
 </div>
