@@ -3,18 +3,20 @@
 
 
 {% include 'navbar.html' %}
-
-<div class="container" style="padding: 50px; max-width: 400px;">
-     <form class="form-group" action="/submit" method="POST">
-     {{ form.csrf_token }}
-     {{ form.systolic.label }} {{ form.systolic(class="form-control") }}
-     {{ form.diastolic.label }} {{ form.diastolic(class="form-control") }}
-     {{ form.pulse.label }} {{ form.pulse(class="form-control") }}
-     {{ form.notes.label }} {{ form.notes(class="form-control") }}
-     {{ form.submit(class="form-control btn btn-primary", style="margin-top: 20px;") }}
+<!-- TODO: add form validation-->
+<div class="outershell">
+<div class="section" style="border: 1px solid var(--muted); border-radius: 12px; background-color: var(--surface-2)">
+     <form class="bloodpressure-form" action="/submit" method="POST">
+          <label class="text-label" for="systolic">Systolic</label>
+          <input type="number" class="text-field" id="systolic" name="systolic">
+          <label class="text-label" for="diastolic">Diastolic</label>
+          <input type="number" class="text-field" id="diastolic" name="diastolic">
+          <label class="text-label" for="pulse">Pulse</label>
+          <input type="number" class="text-field" id="pulse" name="pulse">
+          <input type="submit" class="btn">
      </form>
 </div>
-
+</div>
 
 {% include 'footer.html' %}
 

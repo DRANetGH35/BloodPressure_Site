@@ -49,7 +49,7 @@ def admin_only(f):
 @login_required
 def index():
     form = BloodPressureForm()
-    return render_template('index.html', form=form)
+    return render_template('index.html')
 
 @app.route('/table')
 @login_required
@@ -176,22 +176,19 @@ def delete_note(note_id):
 @app.route('/submit', methods=['POST'])
 @login_required
 def submit():
-    form = BloodPressureForm()
-    if form.validate_on_submit():
-        systolic = request.form.get('systolic')
-        diastolic = request.form.get('diastolic')
-        pulse = request.form.get('pulse')
-        notes = request.form.get('notes')
-        now = datetime.now()
-        new_entry = BloodPressure(systolic=systolic,
-                                  diastolic=diastolic,
-                                  pulse=pulse,
-                                  created=now,
-                                  notes=notes)
-        db.session.add(new_entry)
-        db.session.commit()
-        return render_template('success.html')
-    return render_template('index.html', form=form, errors=form.errors)
+    systolic = request.form.get('systolic')
+    diastolic = request.form.get('diastolic')
+    pulse = request.form.get('pulse')
+    notes = request.form.get('notes')
+    now = datetime.now()
+    new_entry = BloodPressure(systolic=systolic,
+                              diastolic=diastolic,
+                              pulse=pulse,
+                              created=now,
+                              notes=notes)
+    db.session.add(new_entry)
+    db.session.commit()
+    return render_template('success.html')
 
 @app.route('/delete_bloodpressure/<int:id>')
 def delete_bloodpressure(id):

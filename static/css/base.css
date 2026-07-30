@@ -58,3 +58,8 @@
     grid-template-columns: auto auto;
     padding: 10px;
 }
+.bloodpressure-form{
+    display:grid;
+    grid-template-columns: auto auto;
+    padding: 10px;
+}
