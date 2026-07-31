@@ -1,0 +1,29 @@
+.table{
+    color: var(--muted);
+    border-collapse: separate;
+    border: 1px solid grey;
+    border-radius: 20px;
+    border-spacing: 0px;
+    overflow: hidden;
+    padding: 10px;
+    background-color: var(--surface-2);
+    margin: auto;
+}
+.table thead{
+    color: white;
+}
+.table td{
+    margin: 0px;
+    padding: 5px;
+    padding-right: 20px;
+}
+.timeCell{
+    font-size: .75rem;
+}
+.delete-btn{
+    color: var(--accent);
+    text-decoration: none;
+}
+.delete-btn:hover{
+    color: var(--accent-2)
+}

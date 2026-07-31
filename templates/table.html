@@ -2,8 +2,12 @@
 {% extends "base.html" %} {% block content %}
 
 {% include 'navbar.html' %}
-<div class="container">
-<a href="/download_table" class="btn btn-secondary">Download to excel</a><a href="/graph_table" class="btn btn-secondary">Graph</a>
+<link rel="stylesheet" href="{{url_for('static', filename='css/table.css')}}" />
+<div class="outershell">
+<div clas="section">
+    <a href="/download_table" class="btn btn-secondary">Download to excel</a><a href="/graph_table" class="btn btn-secondary">Graph</a>
+</div>
+<div class="section">
 <table class="table">
     <thead>
     <tr>
@@ -17,22 +21,13 @@
     </thead>
     <tbody id="blood-pressure-table">
 
-<!--
-{% for entry in table %}
-    <tr>
-        <td>{{ entry.created}} </td>
-        <td>{{ entry.systolic }}</td>
-        <td>{{ entry.diastolic }}</td>
-        <td>{{ entry.pulse }}</td>
-        <td>{{ entry.notes }}</td>
-    </tr>
-{% endfor %}
--->
+
 </tbody>
 </table>
     <div style="display:flex; margin:auto; width:150px;">
     <a class="btn btn-link" id="page-down"><</a><input value="1" id="page-num-input" style="width:30px;" type="text"></input><a class="btn btn-link" id="page-up">></a>
     </div>
+</div>
 </div>
 <script src="{{ url_for('static', filename='javascript/table_pagination.js') }}"></script>
 {% include 'footer.html' %}

@@ -35,14 +35,19 @@ function changePage(){
             let pulseCell = newRow.insertCell(3);
             let noteCell = newRow.insertCell(4);
             let btnCell = newRow.insertCell(5);
-
+            timeCell.classList.add('timeCell')
+            systolicCell.classList.add('systolicCell')
+            diastolicCell.classList.add('diastolicCell')
+            pulseCell.classList.add('pulseCell')
+            noteCell.classList.add('noteCell')
+            btnCell.classList.add('btnCell')
             let timeCreated = new Date(entry.created)
             timeCell.textContent = timeCreated.toLocaleString('en-US');
             systolicCell.textContent = entry.systolic;
             diastolicCell.textContent = entry.diastolic;
             pulseCell.textContent = entry.pulse;
             noteCell.textContent = entry.notes;
-            btnCell.innerHTML = `<a class='btn btn-link' href=/delete_bloodpressure/${entry.id}>delete<a>`;
+            btnCell.innerHTML = `<a class='delete-btn' href=/delete_bloodpressure/${entry.id}>delete<a>`;
         }
     })
 }
