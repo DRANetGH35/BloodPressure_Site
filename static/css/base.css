@@ -12,12 +12,13 @@
       --radius: 10px;
     }
 #body{
-    margin:auto;
+    margin:0;
     font-family: 'Inter', system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
+    display:flex;
+    flex-direction:column;
+    min-height:100dvh;
 }
 .btn:hover{
     background: var(--accent-2);
@@ -34,7 +35,6 @@
 .outershell{
     display:flex;
 .section{
-
     margin:auto;
     max-width: 1200px;
     display:flex;

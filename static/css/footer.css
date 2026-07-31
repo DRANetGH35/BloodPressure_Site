@@ -1,9 +1,25 @@
 .footer{
+    color: var(--muted);
+    font-size: .875rem;
     max-width: 1200px;
-    border-top: 1px solid grey;
-    margin: auto;
-    margin-top: 20px;
+    min-width: 50vw;
+    border-top: .5px solid var(--border);
+    margin-left:auto;
+    margin-right: auto;
+    padding: 20px;
+    margin-top: auto;
     display:flex;
-    flex-direction:column;
     align-items:center;
+}
+.footer-right{
+    margin-left:auto;
+}
+
+.footer-right a {
+    color: var(--accent);
+    margin: 10px;
+}
+.footer-right a:hover{
+    color: var(--accent-2);
+    cursor: pointer;
 }
