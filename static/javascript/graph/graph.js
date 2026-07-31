@@ -156,11 +156,20 @@ async function updateGraph(){
         plugins: {
             legend: { display: true
         },
-        scales: {
+    },
+    scales: {
+            x: {
+                grid: {
+                    color: 'rgba(255, 255, 255, .5)',
+                    linewidth: 1
+                }
+            },
             y: {
+                grid: {
+                    color: 'rgba(255, 255, 255, .5)'
+                },
                 beginAtZero: false
             }
-        }
     }
 }
 }

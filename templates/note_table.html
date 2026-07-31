@@ -2,13 +2,17 @@
 {% extends "base.html" %} {% block content %}
 
 {% include 'navbar.html' %}
-<div class="container">
+<link rel="stylesheet" href="{{url_for('static', filename='css/table.css')}}" />
+<div class="outershell">
+<div class="section">
 <table class="table">
+    <thead>
     <tr>
         <td>Subject</td>
         <td>Content</td>
         <td></td>
     </tr>
+    </thead>
 {% for entry in table_data %}
     <tr>
         <td>{{ entry.subject }}</td>
@@ -23,7 +27,7 @@
     </tr>
 </table>
 </div>
-
+</div>
 {% include 'footer.html' %}
 
 {% endblock %}

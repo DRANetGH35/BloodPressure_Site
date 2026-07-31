@@ -2,12 +2,15 @@
 {% extends "base.html" %} {% block content %}
 
 {% include 'navbar.html' %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/table.css')}}" />
 <div class="container">
 <table class="table">
+    <thead>
     <tr>
         <td>Time</td>
         <td>Medication</td>
     </tr>
+    </thead>
 {% for entry in table_data %}
     <tr>
         <td>{{ entry.created }}</td>

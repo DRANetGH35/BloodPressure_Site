@@ -55,6 +55,17 @@
     padding:5px;
     border-radius:5px;
     background-color: var(--surface-2)
+
+}
+.text-field-large {
+    border: None;
+    color: white;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--surface-2);
+    width: 200px;
+    height: 100px;
 }
 .submit-btn{
     font-family: 'Inter', system-ui, sans-serif;
