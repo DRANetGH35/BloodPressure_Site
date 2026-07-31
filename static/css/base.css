@@ -20,6 +20,20 @@
     flex-direction:column;
     min-height:100dvh;
 }
+#page-num-input{
+    color: var(--accent);
+    background-color: var(--bg);
+    border-radius: 20px;
+    text-align: center;
+}
+#page-up, #page-down{
+    background: var(--bg);
+    color: var(--accent);
+    border-radius: 20px;
+}
+#page-up:hover, #page-down:hover{
+    background: var(--accent-2);
+}
 .btn:hover{
     background: var(--accent-2);
     cursor: pointer;
