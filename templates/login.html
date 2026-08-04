@@ -6,16 +6,21 @@
 <!-- TODO: add form validation js -->
 <div class="outershell">
     <div class="section">
-        <form class="login-form" action="/login" method="post">
+        <form id="login-form" class="login-form" action="/login" method="post">
             <label class="text-label" for="username">Username:</label>
             <input class="text-field" type="text" id="username" name="username">
             <label class="text-label" for="password">Password:</label>
             <input class="text-field" type="password" id="password" name="password">
             <!--TODO: move submit button out of grid so it centers, then add javascript so it functions -->
-            <input class="submit-btn" type="submit">
+            <input type="submit" hidden>
         </form>
     </div>
+    <input class="btn" type="submit" form="login-form">
+    {% if error %}
+    <p class="error-bubble">{{ error }}</p>
+    {% endif %}
 </div>
+<script src="{{ url_for('static', filename='javascript/validation/login.js') }}"></script>
 {% include 'footer.html' %}
 
 {% endblock %}

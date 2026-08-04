@@ -22,13 +22,7 @@ def db_to_excel():
     df.to_excel(f'static/database.xlsx', index=False)
 
 
-def user_exists(username):
-    try:
-        if db.session.execute(db.select(User).where(User.name == username)).scalar():
-            return True
-    except AttributeError:
-        return False
-    return False
+
 
 def logged_in_as_admin():
     return current_user.is_authenticated and current_user.is_admin == True
@@ -199,16 +193,18 @@ def delete_bloodpressure(id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    error = ''
     if request.method == 'POST':
+        if not User.exists(username=request.form.get('username')):
+            return render_template('login.html', error='Incorrect username or password')
+        password_matches = User.check_password(username=request.form.get('username'), password=request.form.get('password'))
+        if not password_matches:
+            return render_template('login.html', error='Incorrect username or password')
         user = db.session.execute(db.select(User).where(User.name == request.form.get('username'))).scalar()
-        # if user does not exist or password is incorrect
-        if not user_exists(request.form.get('username')) or not check_password_hash(user.password, request.form.get('password')):
-            flash('Incorrect username or password')
-            return redirect(url_for('login'))
         login_user(user)
-        return redirect(url_for('index'))
+        return render_template('login.html', error=error)
     else:
-        return render_template('login.html', current_user=current_user)
+        return render_template('login.html', current_user=current_user, error=error)
 
 
 @app.route('/register', methods=['GET', 'POST'])
