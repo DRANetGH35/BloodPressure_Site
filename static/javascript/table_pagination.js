@@ -46,7 +46,13 @@ function changePage(){
             systolicCell.textContent = entry.systolic;
             diastolicCell.textContent = entry.diastolic;
             pulseCell.textContent = entry.pulse;
-            noteCell.textContent = entry.notes;
+            if (entry.notes){
+                noteCell.innerHTML = `<div class="tooltip">Notes
+                                        <span class="tooltiptext">${entry.notes}</span>
+                                        </div>`;
+            }else{
+                noteCell.innerHTML = ''
+            }
             btnCell.innerHTML = `<a class='delete-btn' href=/delete_bloodpressure/${entry.id}>delete<a>`;
         }
     })
