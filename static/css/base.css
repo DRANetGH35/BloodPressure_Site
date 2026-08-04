@@ -66,6 +66,28 @@
     background: #262940;
     background: linear-gradient(90deg,rgba(38, 41, 64, 1) 0%, rgba(59, 29, 29, 1) 51%, rgba(12, 12, 69, 1) 100%);
 }
+.tooltip{
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted var(--muted);
+    cursor: pointer;
+}
+.tooltiptext{
+    visibility: hidden;
+    width: 130px;
+    background-color:black;
+    color: #ffffff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    right: 105%;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
 .btn:hover{
     background: var(--accent-2);
     cursor: pointer;
