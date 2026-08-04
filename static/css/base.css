@@ -75,11 +75,13 @@
 .tooltiptext{
     visibility: hidden;
     width: 130px;
-    background-color:black;
-    color: #ffffff;
+    background: #11141f;
+    background: linear-gradient(90deg, rgba(17, 20, 31, 1) 0%, rgba(46, 22, 22, 1) 51%, rgba(5, 5, 31, 1) 100%);
+    color: var(--text);
     text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    padding: 5px 10px;
+    border-radius: 30px;
+    border: 2px solid var(--border);
     position: absolute;
     z-index: 1;
     top: -5px;
