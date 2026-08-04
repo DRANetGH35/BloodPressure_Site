@@ -202,7 +202,7 @@ def login():
             return render_template('login.html', error='Incorrect username or password')
         user = db.session.execute(db.select(User).where(User.name == request.form.get('username'))).scalar()
         login_user(user)
-        return render_template('login.html', error=error)
+        return redirect(url_for('index'))
     else:
         return render_template('login.html', current_user=current_user, error=error)
 

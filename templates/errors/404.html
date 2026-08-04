@@ -4,8 +4,11 @@
 
 {% include 'navbar.html' %}
 
-<div class="container center text-center">
-    <h1>404 Page not found</h1>
+<div class="outershell">
+    <div class="section">
+        <h1 class="error-bubble-large">404 Page not found</h1>
+        <a class="btn-special" href="{{ url_for('index') }}">Home</a>
+    </div>
 </div>
 
 {% include 'footer.html' %}

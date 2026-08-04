@@ -35,6 +35,37 @@
 #page-up:hover, #page-down:hover{
     background: var(--accent-2);
 }
+.error-bubble{
+    font-size: .875rem;
+    color: var(--error);
+    background: #1f1111;
+    background: linear-gradient(90deg,rgba(31, 17, 17, 1) 0%, rgba(41, 21, 21, 1) 51%, rgba(31, 5, 21, 1) 100%);
+    padding: 5px 20px;
+    border-radius:20px;
+    border: 1px solid var(--muted)
+}
+.error-bubble-large{
+    color: var(--error);
+    background: #1f1111;
+    background: linear-gradient(90deg,rgba(31, 17, 17, 1) 0%, rgba(41, 21, 21, 1) 51%, rgba(31, 5, 21, 1) 100%);
+    padding: 5px 20px;
+    border-radius:20px;
+    border: 1px solid var(--muted)
+}
+.btn-special{
+    text-decoration: none;
+    color: white;
+    background: #11141f;
+    background: linear-gradient(90deg, rgba(17, 20, 31, 1) 0%, rgba(46, 22, 22, 1) 51%, rgba(5, 5, 31, 1) 100%);
+    padding: 5px 20px;
+    border-radius:20px;
+    border: 1px solid var(--muted)
+}
+.btn-special:hover{
+    cursor: pointer;
+    background: #262940;
+    background: linear-gradient(90deg,rgba(38, 41, 64, 1) 0%, rgba(59, 29, 29, 1) 51%, rgba(12, 12, 69, 1) 100%);
+}
 .btn:hover{
     background: var(--accent-2);
     cursor: pointer;
