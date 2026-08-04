@@ -10,6 +10,7 @@
       --accent-2: #c4b5fd;
       --green: #4ade80;
       --radius: 10px;
+      --error: #ff695e;
     }
 #body{
     margin:0;
@@ -33,6 +34,15 @@
 }
 #page-up:hover, #page-down:hover{
     background: var(--accent-2);
+}
+.error-bubble{
+    font-size: .875rem;
+    color: var(--error);
+    background: #1f1111;
+    background: linear-gradient(90deg,rgba(31, 17, 17, 1) 0%, rgba(41, 21, 21, 1) 51%, rgba(31, 5, 21, 1) 100%);
+    padding: 5px 20px;
+    border-radius:20px;
+    border: 1px solid var(--muted)
 }
 .btn:hover{
     background: var(--accent-2);

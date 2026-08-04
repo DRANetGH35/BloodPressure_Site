@@ -3,7 +3,7 @@ from sqlalchemy import Integer, String, Boolean, Float, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
 import datetime
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from extensions import db
 
 class User(UserMixin, db.Model):
@@ -13,6 +13,15 @@ class User(UserMixin, db.Model):
     password: Mapped[str] = mapped_column(String(100))
     name: Mapped[str] = mapped_column(String(1000))
     is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False)
+
+    @classmethod
+    def exists(cls, username: str) -> Mapped[bool]:
+        return cls.query.filter_by(name=username).first() is not None
+
+    @classmethod
+    def check_password(cls, username: str, password: str) -> Mapped[bool]:
+        user = cls.query.filter_by(name=username).first()
+        return check_password_hash(user.password, password)
 
 class BloodPressure(db.Model):
     __tablename__ = 'blood_pressure'
