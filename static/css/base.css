@@ -67,7 +67,7 @@
     background: linear-gradient(90deg,rgba(38, 41, 64, 1) 0%, rgba(59, 29, 29, 1) 51%, rgba(12, 12, 69, 1) 100%);
 }
 .tooltip{
-    position: relative;
+    position: absolute;
     display: inline-block;
     border-bottom: 1px dotted var(--muted);
     cursor: pointer;

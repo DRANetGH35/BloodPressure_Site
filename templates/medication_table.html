@@ -3,7 +3,8 @@
 
 {% include 'navbar.html' %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/table.css')}}" />
-<div class="container">
+<div class="outershell">
+<div class="section">
 <table class="table">
     <thead>
     <tr>
@@ -11,15 +12,15 @@
         <td>Medication</td>
     </tr>
     </thead>
-{% for entry in table_data %}
-    <tr>
-        <td>{{ entry.created }}</td>
-        <td>{{ entry.medication }}</td>
-    </tr>
-{% endfor %}
+    <tbody id="medication_table">
+
+    </tbody>
 </table>
+    <div style="display:flex; margin:auto; width:150px;">
+    <a class="btn btn-link" id="page-down"><</a><input value="1" id="page-num-input" style="width:30px;" type="text"></input><a class="btn btn-link" id="page-up">></a>
+    </div>
 </div>
-
+</div>
 {% include 'footer.html' %}
-
+<script src="{{ url_for('static', filename='javascript/medication_table_pagination.js') }}"></script>
 {% endblock %}

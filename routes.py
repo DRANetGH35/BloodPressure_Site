@@ -76,6 +76,15 @@ def fetch_table_data(page):
                'notes': entry.notes} for entry in table_data]
     return jsonify({"data": results})
 
+@app.route('/fetch_medication_table_data/<int:page>')
+def fetch_medication_table_data(page):
+    per_page = 25
+    table_data = Medication.query.order_by(Medication.created.desc()).paginate(page=page, per_page=per_page, error_out=False)
+    results = [{'id': entry.id,
+                'created': entry.created,
+                'medication': entry.medication} for entry in table_data]
+    return jsonify({"data": results})
+
 @app.route('/fetch_graph_data')
 def fetch_graph_data():
     window = 30
