@@ -6,7 +6,7 @@
 <!-- TODO: add form validation-->
 <div class="outershell">
 <div class="section">
-     <form class="bloodpressure-form" action="/submit" method="POST">
+     <form id="bloodpressure-form" class="bloodpressure-form" action="/submit" method="POST">
           <label class="text-label" for="systolic">Systolic</label>
           <input type="number" class="text-field" id="systolic" name="systolic">
           <label class="text-label" for="diastolic">Diastolic</label>
@@ -19,7 +19,7 @@
      </form>
 </div>
 </div>
-
+<script src="{{ url_for('static', filename='/javascript/submitBP.js') }}"></script>
 {% include 'footer.html' %}
 
 {% endblock %}
