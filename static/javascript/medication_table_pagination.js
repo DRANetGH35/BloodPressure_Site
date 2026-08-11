@@ -47,7 +47,7 @@ function changePage(){
                 let tooltip = document.getElementById(`tooltip_${i}`)
                 tooltip.innerHTML = tooltip.innerHTML += `<br><p>${element}</p>`
             });
-            btnCell.innerHTML = `<a class='delete-btn'}>delete<a>`;
+            btnCell.innerHTML = `<a class='delete-btn' href=/delete_medication_entry/${entry.id}>delete<a>`;
         }
     })
 }

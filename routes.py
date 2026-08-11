@@ -196,6 +196,13 @@ def add_new_category():
         return redirect(url_for('medication'))
     return render_template('add_new_category.html')
 
+@app.route('/delete_medication_entry/<int:medication_entry_id>')
+@login_required
+def delete_medication_entry(medication_entry_id):
+    medication_entry_to_delete = db.session.execute(select(Medication).where(Medication.id == medication_entry_id)).scalar()
+    db.session.delete(medication_entry_to_delete)
+    db.session.commit()
+    return redirect(url_for('medication_table'))
 @app.route('/delete_medication/<medication_id>', methods=['GET', 'POST'])
 @login_required
 def delete_medication(medication_id):
