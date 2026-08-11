@@ -14,7 +14,62 @@ from sqlalchemy import inspect, select
 import pandas as pd
 from dateutil import parser, tz
 from dateutil.tz import gettz
+tz_mapping = {
+        # --- NORTH AMERICA (US & CANADA) ---
+        "EST": gettz("America/New_York"),  # Eastern Standard Time (UTC-5)
+        "EDT": gettz("America/New_York"),  # Eastern Daylight Time (UTC-4)
+        "CST": gettz("America/Chicago"),  # Central Standard Time (UTC-6)
+        "CDT": gettz("America/Chicago"),  # Central Daylight Time (UTC-5)
+        "MST": gettz("America/Denver"),  # Mountain Standard Time (UTC-7)
+        "MDT": gettz("America/Denver"),  # Mountain Daylight Time (UTC-6)
+        "PST": gettz("America/Los_Angeles"),  # Pacific Standard Time (UTC-8)
+        "PDT": gettz("America/Los_Angeles"),  # Pacific Daylight Time (UTC-7)
+        "AKST": gettz("America/Anchorage"),  # Alaska Standard Time (UTC-9)
+        "AKDT": gettz("America/Anchorage"),  # Alaska Daylight Time (UTC-8)
+        "HST": gettz("Pacific/Honolulu"),  # Hawaii Standard Time (UTC-10)
 
+        # --- EUROPE ---
+        "GMT": gettz("Europe/London"),  # Greenwich Mean Time (UTC+0)
+        "BST": gettz("Europe/London"),  # British Summer Time (UTC+1)
+        "WET": gettz("Europe/Lisbon"),  # Western European Time (UTC+0)
+        "WEST": gettz("Europe/Lisbon"),  # Western European Summer Time (UTC+1)
+        "CET": gettz("Europe/Paris"),  # Central European Time (UTC+1)
+        "CEST": gettz("Europe/Paris"),  # Central European Summer Time (UTC+2)
+        "EET": gettz("Europe/Bucharest"),  # Eastern European Time (UTC+2)
+        "EEST": gettz("Europe/Bucharest"),  # Eastern European Summer Time (UTC+3)
+        "MSK": gettz("Europe/Moscow"),  # Moscow Time (UTC+3)
+
+        # --- ASIA ---
+        "IST": gettz("Asia/Kolkata"),  # India Standard Time (UTC+5:30) *AMBIGUOUS*
+        "PKT": gettz("Asia/Karachi"),  # Pakistan Standard Time (UTC+5)
+        "BTT": gettz("Asia/Thimphu"),  # Bhutan Time (UTC+6)
+        "WIB": gettz("Asia/Jakarta"),  # Western Indonesian Time (UTC+7)
+        "ICT": gettz("Asia/Bangkok"),  # Indochina Time (UTC+7)
+        "SGT": gettz("Asia/Singapore"),  # Singapore Standard Time (UTC+8)
+        "CST_CHINA": gettz("Asia/Shanghai"),  # China Standard Time (UTC+8) *Conflicts with US CST*
+        "JST": gettz("Asia/Tokyo"),  # Japan Standard Time (UTC+9)
+        "KST": gettz("Asia/Seoul"),  # Korea Standard Time (UTC+9)
+
+        # --- AUSTRALIA ---
+        "AWST": gettz("Australia/Perth"),  # Australian Western Standard Time (UTC+8)
+        "ACST": gettz("Australia/Adelaide"),  # Australian Central Standard Time (UTC+9:30)
+        "ACDT": gettz("Australia/Adelaide"),  # Australian Central Daylight Time (UTC+10:30)
+        "AEST": gettz("Australia/Sydney"),  # Australian Eastern Standard Time (UTC+10)
+        "AEDT": gettz("Australia/Sydney"),  # Australian Eastern Daylight Time (UTC+11)
+
+        # --- SOUTH AMERICA & ATLANTIC ---
+        "BRT": gettz("America/Sao_Paulo"),  # Brasilia Time (UTC-3)
+        "BRST": gettz("America/Sao_Paulo"),  # Brasilia Summer Time (UTC-2)
+        "ART": gettz("America/Argentina/Buenos_Aires"),  # Argentina Time (UTC-3)
+        "CLT": gettz("America/Santiago"),  # Chile Standard Time (UTC-4)
+        "CLST": gettz("America/Santiago"),  # Chile Summer Time (UTC-3)
+
+        # --- AFRICA ---
+        "WAT": gettz("Africa/Lagos"),  # West Africa Time (UTC+1)
+        "CAT": gettz("Africa/Maputo"),  # Central Africa Time (UTC+2)
+        "EAT": gettz("Africa/Nairobi"),  # East Africa Time (UTC+3)
+        "SAST": gettz("Africa/Johannesburg"),  # South Africa Standard Time (UTC+2)
+    }
 meds_json = MedsJSON(f"instance/medication.json")
 app = create_app()
 
@@ -103,7 +158,7 @@ def donwload_table():
 @login_required
 def medication():
     if request.method == "POST":
-        now = datetime.now()
+        now = parser.parse(request.form.get('time'), tzinfos=tz_mapping).astimezone(tz.tzutc())
         new_entry = Medication(created=now, medication=str(request.form.getlist('medication')))
         db.session.add(new_entry)
         db.session.commit()
@@ -178,62 +233,6 @@ def delete_note(note_id):
 @app.route('/submit', methods=['POST'])
 @login_required
 def submit():
-    tz_mapping = {
-        # --- NORTH AMERICA (US & CANADA) ---
-        "EST": gettz("America/New_York"),  # Eastern Standard Time (UTC-5)
-        "EDT": gettz("America/New_York"),  # Eastern Daylight Time (UTC-4)
-        "CST": gettz("America/Chicago"),  # Central Standard Time (UTC-6)
-        "CDT": gettz("America/Chicago"),  # Central Daylight Time (UTC-5)
-        "MST": gettz("America/Denver"),  # Mountain Standard Time (UTC-7)
-        "MDT": gettz("America/Denver"),  # Mountain Daylight Time (UTC-6)
-        "PST": gettz("America/Los_Angeles"),  # Pacific Standard Time (UTC-8)
-        "PDT": gettz("America/Los_Angeles"),  # Pacific Daylight Time (UTC-7)
-        "AKST": gettz("America/Anchorage"),  # Alaska Standard Time (UTC-9)
-        "AKDT": gettz("America/Anchorage"),  # Alaska Daylight Time (UTC-8)
-        "HST": gettz("Pacific/Honolulu"),  # Hawaii Standard Time (UTC-10)
-
-        # --- EUROPE ---
-        "GMT": gettz("Europe/London"),  # Greenwich Mean Time (UTC+0)
-        "BST": gettz("Europe/London"),  # British Summer Time (UTC+1)
-        "WET": gettz("Europe/Lisbon"),  # Western European Time (UTC+0)
-        "WEST": gettz("Europe/Lisbon"),  # Western European Summer Time (UTC+1)
-        "CET": gettz("Europe/Paris"),  # Central European Time (UTC+1)
-        "CEST": gettz("Europe/Paris"),  # Central European Summer Time (UTC+2)
-        "EET": gettz("Europe/Bucharest"),  # Eastern European Time (UTC+2)
-        "EEST": gettz("Europe/Bucharest"),  # Eastern European Summer Time (UTC+3)
-        "MSK": gettz("Europe/Moscow"),  # Moscow Time (UTC+3)
-
-        # --- ASIA ---
-        "IST": gettz("Asia/Kolkata"),  # India Standard Time (UTC+5:30) *AMBIGUOUS*
-        "PKT": gettz("Asia/Karachi"),  # Pakistan Standard Time (UTC+5)
-        "BTT": gettz("Asia/Thimphu"),  # Bhutan Time (UTC+6)
-        "WIB": gettz("Asia/Jakarta"),  # Western Indonesian Time (UTC+7)
-        "ICT": gettz("Asia/Bangkok"),  # Indochina Time (UTC+7)
-        "SGT": gettz("Asia/Singapore"),  # Singapore Standard Time (UTC+8)
-        "CST_CHINA": gettz("Asia/Shanghai"),  # China Standard Time (UTC+8) *Conflicts with US CST*
-        "JST": gettz("Asia/Tokyo"),  # Japan Standard Time (UTC+9)
-        "KST": gettz("Asia/Seoul"),  # Korea Standard Time (UTC+9)
-
-        # --- AUSTRALIA ---
-        "AWST": gettz("Australia/Perth"),  # Australian Western Standard Time (UTC+8)
-        "ACST": gettz("Australia/Adelaide"),  # Australian Central Standard Time (UTC+9:30)
-        "ACDT": gettz("Australia/Adelaide"),  # Australian Central Daylight Time (UTC+10:30)
-        "AEST": gettz("Australia/Sydney"),  # Australian Eastern Standard Time (UTC+10)
-        "AEDT": gettz("Australia/Sydney"),  # Australian Eastern Daylight Time (UTC+11)
-
-        # --- SOUTH AMERICA & ATLANTIC ---
-        "BRT": gettz("America/Sao_Paulo"),  # Brasilia Time (UTC-3)
-        "BRST": gettz("America/Sao_Paulo"),  # Brasilia Summer Time (UTC-2)
-        "ART": gettz("America/Argentina/Buenos_Aires"),  # Argentina Time (UTC-3)
-        "CLT": gettz("America/Santiago"),  # Chile Standard Time (UTC-4)
-        "CLST": gettz("America/Santiago"),  # Chile Summer Time (UTC-3)
-
-        # --- AFRICA ---
-        "WAT": gettz("Africa/Lagos"),  # West Africa Time (UTC+1)
-        "CAT": gettz("Africa/Maputo"),  # Central Africa Time (UTC+2)
-        "EAT": gettz("Africa/Nairobi"),  # East Africa Time (UTC+3)
-        "SAST": gettz("Africa/Johannesburg"),  # South Africa Standard Time (UTC+2)
-    }
     systolic = request.form.get('systolic')
     diastolic = request.form.get('diastolic')
     pulse = request.form.get('pulse')

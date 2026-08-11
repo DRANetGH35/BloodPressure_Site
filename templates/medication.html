@@ -7,7 +7,7 @@
     <a class="btn btn-secondary" href="/medication_table" style="font-size:30px">View Table</a>
 
 
-    <form class="align-items-center" style="padding:20px;" action="/medication" method="post">
+    <form id="medicationForm" class="align-items-center" style="padding:20px;" action="/medication" method="post">
 
         {% for category in categories %}
         <div class="container" style="max-width: 400px; margin: 20px auto 20px; padding: 20px; border-radius: 10px; border: 1px solid grey;">
@@ -44,6 +44,7 @@
 
         </div>
 </div>
+<script src="{{ url_for('static', filename='javascript/submitMedication.js') }}"></script>
 {% include 'footer.html' %}
 
 {% endblock %}
