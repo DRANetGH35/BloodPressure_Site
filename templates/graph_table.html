@@ -3,10 +3,14 @@
 
 {% include 'navbar.html' %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div id="chart">
 
+</div>
+<!--
 <div>
     <canvas id="dbChart" height="120"></canvas>
 </div>
+-->
 <div id="controls" style="display:flex; flex-direction:row;">
 <div id="rolling-average" class="px-4">
     <p>Rolling average</p>
@@ -40,8 +44,11 @@
     </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{{ url_for('static', filename='javascript/graph/ApexCharts.js') }}"></script>
+<!--
 <script src="{{ url_for('static', filename='javascript/graph/graph.js') }}"></script>
-
+-->
 {% include 'footer.html' %}
 
 {% endblock %}
