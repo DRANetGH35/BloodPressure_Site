@@ -18,6 +18,7 @@ class User(UserMixin, db.Model):
     is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False)
     bloodpressure_entries: Mapped[List["BloodPressure"]] = relationship(back_populates="user")
     medication_entries: Mapped[List["Medication"]] = relationship(back_populates="user")
+    medication_entry_entries: Mapped[List["MedicationEntry"]] = relationship(back_populates="user")
 
 
     @classmethod
@@ -81,6 +82,8 @@ class MedicationEntry(db.Model):
     __tablename__ = "medication_entry"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user: Mapped[User] = relationship("User", back_populates="medication_entry_entries")
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     category: Mapped[Category] = relationship("Category", back_populates="medication_entries")
     category_id: Mapped[int] = mapped_column(Integer, ForeignKey('medication_category.id'))
     name: Mapped[str] = mapped_column(String(1000), nullable=False)

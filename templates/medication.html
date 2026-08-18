@@ -9,33 +9,7 @@
 
     <form id="medicationForm" class="align-items-center" style="padding:20px;" action="/medication" method="post">
 
-        {% for category in categories %}
-        <div class="container" style="max-width: 400px; margin: 20px auto 20px; padding: 20px; border-radius: 10px; border: 1px solid grey;">
 
-            <p>{{ category.name }}</p>
-            {% for medication in medications %}
-                {% if medication.category.name == category.name %}
-                <table style="margin-left:auto; margin-right:auto;">
-                <tr>
-                <td><input style="margin:5px" class="form-check-input" type="checkbox" id="{{ medication.id }}" name="medication" value="{{ medication.name }} ({{ medication.dose_mg }}mg)">{{ medication.name }}  ({{ medication.dose_mg }}mg)</td>
-                <td><a href="/delete_medication/{{ medication.id }}">delete</a></td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        <tr>
-        <td></td><td></td>
-        </tr>
-        <tr>
-        <td>-----</td><td>-----</td>
-        </tr>
-        <tr>
-        <td></td><td><a class="" href="/add_new_medication/{{ category.id }}">Add Med</a></td>
-        </tr>
-        </table>
-        </div>
-
-        {% endfor %}
-        <br>
     <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 15px; margin-top:50px;">
         </form>
         <div class="container" style="display:flex; justify-content:center; align-items:center; flex-direction:column;">

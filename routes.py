@@ -138,6 +138,16 @@ def fetch_medication_table_data(page):
                 'created': entry.created,
                 'medication': entry.medication} for entry in table_data]
     return jsonify({"data": results})
+@app.route('/fetch_medication_entries/')
+def fetch_medication_entries():
+    medications = db.session.execute(select(MedicationEntry).where(MedicationEntry.user_id == current_user.id)).scalars()
+    results = [{'id': med.id,
+                   'category': med.category.name,
+                   'name': med.name,
+                   'dose_mg': med.dose_mg} for med in medications]
+
+    data = {'medications': results}
+    return jsonify(data)
 
 @app.route('/fetch_graph_data')
 def fetch_graph_data():
@@ -166,7 +176,7 @@ def medication():
         db.session.add(new_entry)
         db.session.commit()
         return redirect(url_for('medication_table'))
-    return render_template('medication.html', categories=db.session.execute(select(Category)).scalars().all(), medications=db.session.execute(select(MedicationEntry)).scalars().all())
+    return render_template('medication.html', medications=db.session.execute(select(MedicationEntry).where(MedicationEntry.user_id==current_user.id)).scalars())
 
 @app.route("/medication_table")
 @login_required
@@ -182,7 +192,7 @@ def add_new_medication(category_id):
         med = request.form.get('medication')
         dose = request.form.get('dose')
         if form.validate_on_submit():
-            new_med_entry = MedicationEntry(category_id=category_id, name=med, dose_mg=dose)
+            new_med_entry = MedicationEntry(user_id=current_user.id, category_id=category_id, name=med, dose_mg=dose)
             db.session.add(new_med_entry)
             db.session.commit()
             return redirect(url_for('medication'))
