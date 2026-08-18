@@ -10,13 +10,23 @@ class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[str] = mapped_column(String(1000), nullable=False)
     password: Mapped[str] = mapped_column(String(100))
     name: Mapped[str] = mapped_column(String(1000))
+    verification_code: Mapped[int] = mapped_column(Integer, nullable=False)
+    verified: Mapped[bool] = mapped_column(Boolean, nullable=False)
     is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    bloodpressure_entries: Mapped[List["BloodPressure"]] = relationship(back_populates="user")
+    medication_entries: Mapped[List["Medication"]] = relationship(back_populates="user")
+
 
     @classmethod
     def exists(cls, username: str) -> Mapped[bool]:
         return cls.query.filter_by(name=username).first() is not None
+
+    @classmethod
+    def exists_by_email(cls, email: str) -> bool:
+        return cls.query.filter_by(email=email).first() is not None
 
     @classmethod
     def check_password(cls, username: str, password: str) -> Mapped[bool]:
@@ -27,6 +37,8 @@ class BloodPressure(db.Model):
     __tablename__ = 'blood_pressure'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
+    user: Mapped[User] = relationship("User", back_populates="bloodpressure_entries")
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     systolic: Mapped[int] = mapped_column(Integer, nullable=False)
     diastolic: Mapped[int] = mapped_column(Integer, nullable=False)
     pulse: Mapped[int] = mapped_column(Integer, nullable=False)
@@ -46,6 +58,8 @@ class Medication(db.Model):
     __tablename__ = "medication"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user: Mapped[User] = relationship("User", back_populates="medication_entries")
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     created: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
     medication: Mapped[String] = mapped_column(String, nullable=False)
 

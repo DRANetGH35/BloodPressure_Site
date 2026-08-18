@@ -6,7 +6,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
-from extensions import db
+from extensions import db, send_reset_link, send_verification_email
 from forms import BloodPressureForm, AddNewMedicationForm, LoginForm, RegisterForm, NewNoteForm
 from medication import MedsJSON
 from models import User, BloodPressure, Medication, Note, MedicationEntry, Category
@@ -107,8 +107,7 @@ def index():
 def table():
     page = 1
     per_page = 25
-    table_data = BloodPressure.query.order_by(BloodPressure.created.desc()).paginate(page=page, per_page=per_page, error_out=False)
-    return render_template('table.html', table=table_data)
+    return render_template('table.html')
 
 @app.route('/graph_table')
 def graph_table():
@@ -122,7 +121,7 @@ def graph_table():
 @app.route('/fetch_table_data/<int:page>')
 def fetch_table_data(page):
     per_page = 25
-    table_data = BloodPressure.query.order_by(BloodPressure.created.desc()).paginate(page=page, per_page=per_page, error_out=False)
+    table_data = BloodPressure.query.filter_by(user_id=current_user.id).order_by(BloodPressure.created.desc()).paginate(page=page, per_page=per_page, error_out=False)
     results = [{'id': entry.id,
                'created': entry.created,
                'systolic': entry.systolic,
@@ -134,7 +133,7 @@ def fetch_table_data(page):
 @app.route('/fetch_medication_table_data/<int:page>')
 def fetch_medication_table_data(page):
     per_page = 25
-    table_data = Medication.query.order_by(Medication.created.desc()).paginate(page=page, per_page=per_page, error_out=False)
+    table_data = Medication.query.filter_by(user_id=current_user.id).order_by(Medication.created.desc()).paginate(page=page, per_page=per_page, error_out=False)
     results = [{'id': entry.id,
                 'created': entry.created,
                 'medication': entry.medication} for entry in table_data]
@@ -160,7 +159,10 @@ def donwload_table():
 def medication():
     if request.method == "POST":
         now = parser.parse(request.form.get('time'), tzinfos=tz_mapping).astimezone(tz.tzutc())
-        new_entry = Medication(created=now, medication=str(request.form.getlist('medication')))
+        new_entry = Medication(user=current_user,
+                               user_id=current_user.id,
+                               created=now,
+                               medication=str(request.form.getlist('medication')))
         db.session.add(new_entry)
         db.session.commit()
         return redirect(url_for('medication_table'))
@@ -246,7 +248,9 @@ def submit():
     pulse = request.form.get('pulse')
     notes = request.form.get('notes')
     now = parser.parse(request.form.get('time'), tzinfos=tz_mapping).astimezone(tz.tzutc())
-    new_entry = BloodPressure(systolic=systolic,
+    new_entry = BloodPressure(user=current_user,
+                              user_id=current_user.id,
+                              systolic=systolic,
                               diastolic=diastolic,
                               pulse=pulse,
                               created=now,
@@ -281,7 +285,7 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = str(request.form.get('name'))
+        username = str(request.form.get('username'))
         email = str(request.form.get('email'))
         password = str(request.form.get('password'))
         verification_code = f"{random.randint(0, 99999):05}"
@@ -294,8 +298,7 @@ def register():
                         password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8),
                         is_admin=False,
                         verified=False,
-                        verification_code=verification_code,
-                        hobbs_time=0
+                        verification_code=verification_code
                         )
         db.session.add(new_user)
         db.session.commit()
