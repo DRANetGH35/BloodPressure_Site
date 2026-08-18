@@ -1,5 +1,6 @@
 from datetime import datetime
 import csv
+import random
 from flask import abort, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 import os
@@ -278,18 +279,30 @@ def login():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-@admin_only
 def register():
-    form = RegisterForm()
     if request.method == 'POST':
-        if not form.validate():
-            return render_template('register.html', form=form, current_user=current_user, errors=form.errors)
-        new_user = User(name=form.username.data,
-                        password=generate_password_hash(password=form.password.data, method='pbkdf2:sha256', salt_length=8),
-                        is_admin=form.is_admin.data)
+        username = str(request.form.get('name'))
+        email = str(request.form.get('email'))
+        password = str(request.form.get('password'))
+        verification_code = f"{random.randint(0, 99999):05}"
+        if User.exists_by_email(email):
+            return render_template('account/register.html', error="Account already exists with that email")
+        if User.exists(username):
+            return render_template('account/register.html', error="Username taken")
+        new_user = User(name=username,
+                        email=email,
+                        password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8),
+                        is_admin=False,
+                        verified=False,
+                        verification_code=verification_code,
+                        hobbs_time=0
+                        )
         db.session.add(new_user)
         db.session.commit()
-    return render_template('login.html', form=form, errors=form.errors, current_user=current_user)
+        send_verification_email(verification_code, email)
+        login_user(new_user, remember=True)
+        return redirect(url_for('index'))
+    return render_template('register.html', current_user=current_user)
 
 @app.route('/populate_created_values')
 def populate_created_values():

@@ -3,17 +3,29 @@
 
 
 {% include 'navbar.html' %}
-
-<div class="container">
-    {{ render_form(form) }}
-    {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in messages %}
-              <p class="flashes">{{ message }}</p>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+<div class="outershell">
+<div class="section">
+    <form class="register-form" id="registerForm" action="/register" method="post">
+        <label class="text-label" for="username">Username</label>
+        <input class="text-field" type="text" id="username" name="username">
+        <p id="usernameError"></p>
+        <label class="text-label" for="email">Email</label>
+        <input class="text-field" type="text" id="email" name="email">
+        <p id="emailError"></p>
+        <label class="text-label" for="password">Password</label>
+        <input class="text-field" type="password" id="password" name="password">
+        <p id="passwordError"></p>
+        <label class="text-label" for="confirmPassword">Confirm Password</label>
+        <input class="text-field" type="password" id="confirmPassword" name="confirmPassword">
+        <p id="confirmPasswordError"></p>
+    </form>
+    <input class="btn" type="submit" form="registerForm">
+    {% if error %}
+        <p class="error-bubble">{{ error }}</p>
+    {% endif %}
 </div>
+</div>
+<script src="{{ url_for('static', filename='javascript/account/registerValidation.js') }}"></script>
 {% include 'footer.html' %}
 
 {% endblock %}
