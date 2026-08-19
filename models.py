@@ -19,7 +19,7 @@ class User(UserMixin, db.Model):
     bloodpressure_entries: Mapped[List["BloodPressure"]] = relationship(back_populates="user")
     medication_entries: Mapped[List["Medication"]] = relationship(back_populates="user")
     medication_entry_entries: Mapped[List["MedicationEntry"]] = relationship(back_populates="user")
-
+    categories: Mapped[List["Category"]] = relationship(back_populates="user")
 
     @classmethod
     def exists(cls, username: str) -> Mapped[bool]:
@@ -75,6 +75,8 @@ class Category(db.Model):
     __tablename__ = "medication_category"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user: Mapped[User] = relationship("User", back_populates="categories")
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     name: Mapped[str] = mapped_column(String(1000), nullable=False)
     medication_entries: Mapped[List["MedicationEntry"]] = relationship(back_populates="category")
 

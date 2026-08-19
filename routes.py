@@ -141,12 +141,16 @@ def fetch_medication_table_data(page):
 @app.route('/fetch_medication_entries/')
 def fetch_medication_entries():
     medications = db.session.execute(select(MedicationEntry).where(MedicationEntry.user_id == current_user.id)).scalars()
-    results = [{'id': med.id,
+    medications = [{'id': med.id,
                    'category': med.category.name,
                    'name': med.name,
                    'dose_mg': med.dose_mg} for med in medications]
-
-    data = {'medications': results}
+    categories = db.session.execute(select(Category).where(Category.user_id == current_user.id)).scalars()
+    categories = [{"id": cat.id,
+                   'user_id': cat.user_id,
+                   'name': cat.name} for cat in categories]
+    data = {'medications': medications,
+            'categories': categories}
     return jsonify(data)
 
 @app.route('/fetch_graph_data')
@@ -203,7 +207,7 @@ def add_new_medication(category_id):
 def add_new_category():
     if request.method == 'POST':
         category_name = request.form.get('category')
-        new_category = Category(name=category_name)
+        new_category = Category(name=category_name, user_id=current_user.id)
         db.session.add(new_category)
         db.session.commit()
         return redirect(url_for('medication'))
