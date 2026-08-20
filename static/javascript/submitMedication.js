@@ -21,7 +21,11 @@ fetch(url).then(response => response.json()).then(data => {
             newDiv = document.getElementById(category.name)
             medications.forEach((med, i) => {
                 if(med.category == category.name){
-                    newMed = `<div><input style="margin: 5px" class="form-check-input" type="checkbox" id="${med.id}" name="medication" value="${med.name} (${med.dose_mg}mg)">${med.name}  (${med.dose_mg}mg)</input></div>`
+                    //TODO: fix delete btn class function
+                    newMed =    `<div>
+                                    <input style="margin: 5px" class="form-check-input" type="checkbox" id="${med.id}" name="medication" value="${med.name} (${med.dose_mg}mg)">${med.name}  (${med.dose_mg}mg)</input>
+                                    <a href="/delete_medication/${med.id}" class="delete-btn">delete</a>
+                                </div>`
                     newDiv.insertAdjacentHTML('beforeend', newMed)
                 }
             });
