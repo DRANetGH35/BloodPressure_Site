@@ -20,13 +20,8 @@
 .timeCell{
     font-size: .75rem;
 }
-.delete-btn{
-    color: var(--accent);
-    text-decoration: none;
-}
-.delete-btn:hover{
-    color: var(--accent-2)
-}
+
+
 .medListCell{
     max-width: 250px;
     max-height: 30px;

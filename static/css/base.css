@@ -102,6 +102,13 @@
     background: var(--accent);
     border-radius: 5px;
 }
+.delete-btn{
+    color: var(--accent);
+    text-decoration: none;
+}
+.delete-btn:hover{
+    color: var(--accent-2)
+}
 .outershell{
     display:flex;
     flex-direction:column;
