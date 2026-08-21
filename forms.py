@@ -25,13 +25,6 @@ class BloodPressureForm(FlaskForm):
         if field.data < 1 or field.data > 1000:
             raise ValidationError('Please enter a number between 0 and 1000')
 
-class AddNewMedicationForm(FlaskForm):
-    medication = StringField('Medication', validators=[DataRequired()])
-    dose = FloatField('Dose', validators=[DataRequired()])
-    submit = SubmitField()
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

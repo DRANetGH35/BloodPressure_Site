@@ -3,20 +3,21 @@
 
 
 {% include 'navbar.html' %}
-<div class="container" style="text-align: center; padding: 20px;">
+<div class="outershell" style="text-align: center; padding: 20px;">
     <a class="btn btn-secondary" href="/medication_table" style="font-size:30px">View Table</a>
 
+    <form id="medicationForm" class="section"  action="/medication" method="post">
 
-    <form id="medicationForm" class="align-items-center" style="padding:20px;" action="/medication" method="post">
 
 
-    <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 15px; margin-top:50px;">
-        </form>
-        <div class="container" style="display:flex; justify-content:center; align-items:center; flex-direction:column;">
+    </form>
+    <div class="section">
         <a href="/add_new_category">Add new category</a>
+    </div>
+    <div class="section">
 
-
-        </div>
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </div>
 </div>
 <script src="{{ url_for('static', filename='javascript/submitMedication.js') }}"></script>
 {% include 'footer.html' %}

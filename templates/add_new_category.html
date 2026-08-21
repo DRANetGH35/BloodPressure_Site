@@ -1,15 +1,23 @@
 {% from "bootstrap5/form.html" import render_form %}
 {% extends "base.html" %} {% block content %}
 
+<style>
+    form{
+        display:grid;
+        grid-template-columns: auto auto;
+    }
+</style>
 
 {% include 'navbar.html' %}
-<div class="container">
+<div class="outershell">
+    <div class="section">
     <form action="/add_new_category" method="post">
-        <label>Category:
-        <input class="form-control" type="text" name="category" placeholder="category name">
-        </label>
-        <input class="btn btn-primary" type="submit">
+        <label class="text-label" for="category">Category</label>
+        <input class="text-field" type="text" name="category" placeholder="category name">
+        <p></p>
+        <input class="submit-btn" type="submit">
     </form>
+    </div>
 </div>
 {% include 'footer.html' %}
 

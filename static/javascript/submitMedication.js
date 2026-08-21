@@ -15,15 +15,16 @@ fetch(url).then(response => response.json()).then(data => {
     categories = data['categories']
     console.log(categories)
     categories.forEach((category, i) => {
-            newDiv = `<div id="${category.name}" className="container"
-                                style="max-width: 400px; margin: 20px auto 20px; padding: 20px; border-radius: 10px; border: 1px solid grey;"><h3>${category.name}</h3></div>`
+            newDiv = `<div id="${category.name}" class="CategoryDiv"
+                                style=""><h3>${category.name}</h3></div>`
             medicationForm.insertAdjacentHTML('beforeend', newDiv)
             newDiv = document.getElementById(category.name)
             medications.forEach((med, i) => {
                 if(med.category == category.name){
                     //TODO: fix delete btn class function
-                    newMed =    `<div>
-                                    <input style="margin: 5px" class="form-check-input" type="checkbox" id="${med.id}" name="medication" value="${med.name} (${med.dose_mg}mg)">${med.name}  (${med.dose_mg}mg)</input>
+                    newMed =    `<div class="medBubble">
+                                    <input class="form-check-input" type="checkbox" id="${med.id}" name="medication" value="${med.name} (${med.dose_mg}mg)"></input>
+                                    <label for="medication">${med.name}  (${med.dose_mg}mg)</label>
                                     <a href="/delete_medication/${med.id}" class="delete-btn">delete</a>
                                 </div>`
                     newDiv.insertAdjacentHTML('beforeend', newMed)

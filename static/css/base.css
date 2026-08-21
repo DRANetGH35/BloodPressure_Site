@@ -109,6 +109,61 @@
 .delete-btn:hover{
     color: var(--accent-2)
 }
+.CategoryDiv{
+    background-color:#121212;
+    max-width: 400px;
+    margin: 20px auto 20px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid grey;
+}
+.medBubble{
+    display:flex;
+    border: 1px solid grey;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 25px;
+    align-items:center;
+    gap: 8px;
+}
+.medBubble input{
+    appearance: none;
+  -webkit-appearance: none; /* Safari compatibility */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #6366f1;
+  border-radius: 4px;
+  background-color: #fff;
+  display: inline-grid;
+  place-content: center;
+  margin: 0;
+  transition: all 0.2s ease-in-out;
+}
+.medBubble input::before{
+    content: "";
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transform-origin: center;
+  transition: transform 0.01s ease-in-out;
+  background-color: #fff;
+  clip-path: polygon(14% 44%, 0 58%, 38% 94%, 100% 16%, 86% 2%, 38% 66%);
+}
+.medBubble input:checked{
+    background-color: #6366f1;
+}
+.medBubble input:focus-visible{
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+.medBubble input:checked::before{
+    transform: scale(1);
+}
+.medBubble label{
+      user-select: none;
+}
+
 .outershell{
     display:flex;
     flex-direction:column;

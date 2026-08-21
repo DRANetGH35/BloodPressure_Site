@@ -7,7 +7,7 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from extensions import db, send_reset_link, send_verification_email
-from forms import BloodPressureForm, AddNewMedicationForm, LoginForm, RegisterForm, NewNoteForm
+from forms import BloodPressureForm, LoginForm, RegisterForm, NewNoteForm
 from medication import MedsJSON
 from models import User, BloodPressure, Medication, Note, MedicationEntry, Category
 from app import create_app
@@ -191,16 +191,14 @@ def medication_table():
 @app.route("/add_new_medication/<category_id>", methods=['GET', 'POST'])
 @login_required
 def add_new_medication(category_id):
-    form = AddNewMedicationForm()
     if request.method == "POST":
         med = request.form.get('medication')
         dose = request.form.get('dose')
-        if form.validate_on_submit():
-            new_med_entry = MedicationEntry(user_id=current_user.id, category_id=category_id, name=med, dose_mg=dose)
-            db.session.add(new_med_entry)
-            db.session.commit()
-            return redirect(url_for('medication'))
-    return render_template('/add_new_medication.html', form=form, errors=form.errors)
+        new_med_entry = MedicationEntry(user_id=current_user.id, category_id=category_id, name=med, dose_mg=dose)
+        db.session.add(new_med_entry)
+        db.session.commit()
+        return redirect(url_for('medication'))
+    return render_template('/add_new_medication.html')
 
 @app.route('/add_new_category', methods=['GET', 'POST'])
 @login_required

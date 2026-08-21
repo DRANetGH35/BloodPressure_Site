@@ -1,10 +1,24 @@
 {% from "bootstrap5/form.html" import render_form %}
 {% extends "base.html" %} {% block content %}
 
+<style>
+    form{
+        display:grid;
+        grid-template-columns: auto auto;
+    }
+</style>
 
 {% include 'navbar.html' %}
-<div class="container">
-    {{ render_form(form) }}
+<div class="outershell">
+    <div class="section">
+        <form method="post">
+            <label class="text-label" for="medication">Medication</label>
+            <input class="text-field" type="text" name="medication" id="medication">
+            <label class="text-label" for="dose">Dose</label>
+            <input class="text-field" type="number" name="dose" id="dose">
+            <p></p><input class="submit-btn" type="submit">
+        </form>
+    </div>
 </div>
 {% include 'footer.html' %}
 
