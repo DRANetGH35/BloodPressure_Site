@@ -102,6 +102,23 @@ def index():
     form = BloodPressureForm()
     return render_template('index.html')
 
+@app.route('/admin_panel')
+@admin_only
+def admin_panel():
+    return render_template('admin/panel.html')
+
+@app.route('/admin/users')
+@admin_only
+def admin_users():
+    return render_template('admin/users.html')
+
+@app.route('/admin/login_as/<int:user_id>')
+@admin_only
+def login_as(user_id):
+    user_to_login = db.session.execute(select(User).where(User.id == user_id)).scalar()
+    login_user(user_to_login)
+    return redirect(url_for('index'))
+
 @app.route('/table')
 @login_required
 def table():
@@ -117,6 +134,21 @@ def graph_table():
     diastolic = [entry.diastolic for entry in table_data]
     pulse = [entry.pulse for entry in table_data]
     return render_template('graph_table.html', labes=labels, systolic=systolic, diastolic=diastolic, pulse=pulse)
+
+@app.route('/admin/fetch_users/<int:page>')
+@admin_only
+def admin_fetch_users(page):
+    per_page = 25
+    table_data = User.query.order_by(User.id.desc()).paginate(page=page, per_page=per_page, error_out=False)
+    results = [{
+        'id': user.id,
+        'name': user.name,
+        'verification_code': user.verification_code,
+        'verified': user.verified,
+        'is_admin': user.is_admin
+    } for user in table_data]
+    return jsonify({"data": results})
+
 
 @app.route('/fetch_table_data/<int:page>')
 def fetch_table_data(page):

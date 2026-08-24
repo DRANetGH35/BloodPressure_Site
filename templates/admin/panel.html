@@ -1,0 +1,16 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends "base.html" %} {% block content %}
+
+
+{% include 'navbar.html' %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/401.css')}}" />
+<div class="outershell">
+<div class="section">
+<a href="/admin/users" class="btn-special">Users</a>
+
+</div>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends "base.html" %} {% block content %}
+
+
+{% include 'navbar.html' %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/table.css')}}" />
+<div class="outershell">
+<div class="section">
+<table class="table">
+    <thead>
+    <tr>
+        <td>Name</td>
+        <td>Code</td>
+        <td>Verified</td>
+        <td>admin</td>
+        <td>btn</td>
+    </tr>
+    </thead>
+    <tbody id="blood-pressure-table">
+
+
+</tbody>
+</table>
+    <div style="display:flex; margin:auto; width:150px;">
+    <a class="btn btn-link" id="page-down"><</a><input value="1" id="page-num-input" style="width:30px;" type="text"></input><a class="btn btn-link" id="page-up">></a>
+    </div>
+</div>
+</div>
+<script src="{{ url_for('static', filename='javascript/admin/user_table.js') }}"></script>
+{% include 'footer.html' %}
+
+{% endblock %}
