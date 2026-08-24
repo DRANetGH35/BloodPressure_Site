@@ -7,8 +7,8 @@ medicationForm.addEventListener('formdata', (event) => {
     formattedTime = currentTime.toLocaleString('en-US', {month: 'numeric', day:'numeric', year: 'numeric', hour:'numeric', minute:'numeric', second:'numeric', timeZoneName: "short"})
     formData.append('time', formattedTime)
 })
-
-url = `${window.location.origin}/fetch_medication_entries`
+function update_Page(){
+url = `/fetch_medication_entries/`
 fetch(url).then(response => response.json()).then(data => {
     categories = []
     medications = data['medications']
@@ -35,3 +35,6 @@ fetch(url).then(response => response.json()).then(data => {
             });
 
             });
+}
+
+updatePage()
