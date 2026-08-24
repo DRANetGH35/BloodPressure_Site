@@ -29,17 +29,20 @@ function changePage(){
             let newRow = bloodPressureTable.insertRow();
 
             let nameCell = newRow.insertCell(0);
-            let codeCell = newRow.insertCell(1);
-            let verifiedCell = newRow.insertCell(2);
-            let adminCell = newRow.insertCell(3);
-            let btnCell = newRow.insertCell(4);
+            let emailCell = newRow.insertCell(1);
+            let codeCell = newRow.insertCell(2);
+            let verifiedCell = newRow.insertCell(3);
+            let adminCell = newRow.insertCell(4);
+            let btnCell = newRow.insertCell(5);
             nameCell.classList.add('nameCell')
+            emailCell.classList.add('emailCell')
             codeCell.classList.add('codeCell')
             verifiedCell.classList.add('verifiedCell')
             adminCell.classList.add('adminCell')
             btnCell.classList.add('btnCell')
 
             nameCell.textContent = user.name
+            emailCell.textContent = user.email
             codeCell.textContent = user.verification_code
             verifiedCell.textContent = user.verified
             adminCell.textContent = user.is_admin

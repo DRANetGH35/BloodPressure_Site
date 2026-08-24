@@ -143,6 +143,7 @@ def admin_fetch_users(page):
     results = [{
         'id': user.id,
         'name': user.name,
+        'email': user.email,
         'verification_code': user.verification_code,
         'verified': user.verified,
         'is_admin': user.is_admin
